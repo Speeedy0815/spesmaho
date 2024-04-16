@@ -1,0 +1,9 @@
+{
+    "name": "hilfe",
+    "version": "1.0.0",
+    "dependencies": [
+       {
+            "name": "PubSubClient"
+        }
+    ]
+}

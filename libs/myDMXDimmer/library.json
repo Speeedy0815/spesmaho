@@ -1,0 +1,10 @@
+{
+    "name": "myDMXDimmer",
+    "version": "1.0.0",
+    "dependencies": [
+        {
+            "name": "DmxSimple"
+          
+        }
+    ]
+}

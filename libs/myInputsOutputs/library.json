@@ -1,0 +1,16 @@
+{
+    "name": "myInputsOutputs",
+    "version": "1.0.0",
+    "dependencies": [
+       {
+            "name": "Adafruit MCP23017 Arduino Library"
+        },
+        {
+            "name": "Adafruit BusIO"
+        },
+        {
+            "name": "Wire"
+        }
+
+    ]
+}

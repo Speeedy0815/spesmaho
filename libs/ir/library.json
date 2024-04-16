@@ -1,0 +1,12 @@
+{
+    "name": "myIR",
+    "version": "1.0.0",
+    "dependencies": [
+       {
+            "name": "IRremote",
+            "owner":"z3t0",
+            "version":"3.8.0"
+        }
+
+    ]
+}

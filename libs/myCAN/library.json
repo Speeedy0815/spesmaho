@@ -1,0 +1,15 @@
+{
+    "name": "myCAN",
+    "version": "1.0.0",
+    "dependencies": [
+        {
+            "name": "Adafruit MCP2515"
+
+        }
+        ,
+        {
+            "name": "Adafruit CAN"
+           
+        }
+    ]
+}

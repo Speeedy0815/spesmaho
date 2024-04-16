@@ -1,0 +1,10 @@
+{
+  "name": "myUhrESP",
+  "version": "1.0.0",
+  "dependencies": [
+     {
+          "name": "ESP32Time"
+      }
+
+  ]
+}

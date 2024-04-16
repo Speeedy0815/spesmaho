@@ -1,0 +1,14 @@
+{
+    "name": "myDisplay",
+    "version": "1.0.1",
+    "dependencies": [
+       {
+            "name": "XPT2046_Touchscreen"
+        },
+        {
+            "name": "Wire"
+        }
+       
+  
+    ]
+}

@@ -1,0 +1,13 @@
+{
+    "name": "myhdc108",
+    "version": "1.0.0",
+    "dependencies": [
+       {
+            "name": "ClosedCube HDC1080"
+        },
+        {
+            "name": "Wire"
+        }
+
+    ]
+}

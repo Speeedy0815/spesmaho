@@ -1,0 +1,24 @@
+[33mcommit f7c7d6e81763b21efc90744722003a01af47fbee[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31mPublicGithub/main[m[33m)[m
+Merge: fff12f1 09b3918
+Author: Marcel Gonzalez <marcel@geruestbau-gonzalez.de>
+Date:   Tue Apr 16 10:12:58 2024 +0200
+
+    Merge remote-tracking branch 'remotes/PublicGithub/main'
+
+[33mcommit 09b3918944e9d3b7292000bd51eaf92cffd2dc23[m
+Author: Speeedy0815 <59925572+Speeedy0815@users.noreply.github.com>
+Date:   Mon Apr 15 15:01:58 2024 +0200
+
+    Initial commit
+
+[33mcommit fff12f16e22cfd43d678e09f753bfa7313c91b93[m[33m ([m[1;31mPublicGithub/master[m[33m)[m
+Author: Marcel Gonzalez <marcel.gonzalez@siemens.com>
+Date:   Mon Mar 18 08:31:23 2024 +0100
+
+    a
+
+[33mcommit 2c9f83cfe0d818934ef967bf4c6a2c8a5fd3c55c[m
+Author: Marcel Gonzalez <marcel.gonzalez@siemens.com>
+Date:   Mon Mar 18 08:24:04 2024 +0100
+
+    alles kompilierbar
