@@ -1,5 +1,5 @@
 #pragma once
-#define MYDEBUG 0
+#define MYDEBUG 1
 #include "mydebug.h"
 
 

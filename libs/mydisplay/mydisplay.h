@@ -79,7 +79,7 @@ private:
 
 	double  aussentemperatur = 999;
 	byte warntext[50];
-	uint8_t mywarntextfarbe = 0;  //0 schwarz (unsichtbar) 1:wei� 2:rot 3:gr�n 4:blau 5:grau
+	uint8_t mywarntextfarbe = 0;  //0 schwarz (unsichtbar) 1:weiß 2:rot 3:grün 4:blau 5:grau
 
 	uint8_t lautstaerke = 0; //0-100
 	int8_t mondph = -1; //0 Neumond,1-4 zunehmend 5 Vollmond,6-9 abnehmend   -1 disabled
@@ -99,7 +99,7 @@ private:
 	void aktualisiereWetter();
 	 
 	void ZeichneButton(uint8_t nr, bool enabled, uint8_t Farbe, const char* bildname, bool bildname_ist_text);
-	void aktualisiereWarnung(); //das wird nicht mit im aktualisiere Display aufgerufen  --> nur wenn vom Server da was kommt (da das �berpr�fen, ob sich was �ndert schwierig ist)
+	void aktualisiereWarnung(); //das wird nicht mit im aktualisiere Display aufgerufen  --> nur wenn vom Server da was kommt (da das überprüfen, ob sich was ändert schwierig ist)
 
 	void schalteDisplayan();
 	bool sollDislayan() { return ((zeitbisausgeschaltetwird > 0) || (true == updatemode)); };  // wenn Update --> Bildschirm nicht mehr ausschalten
@@ -107,7 +107,7 @@ private:
 
 
 	//myTimer Hintergrundbeleuchtungstimer;
-	//uint16_t Hintergrundbeleuchtungstimerzeit = 10; //ms  --> achtung nicht �ndern, der Timer wird doppelt verwendet!!!!!
+	//uint16_t Hintergrundbeleuchtungstimerzeit = 10; //ms  --> achtung nicht ändern, der Timer wird doppelt verwendet!!!!!
 
 	uint32_t zeitbisausgeschaltetwird = 0; //in 10msTaktung  -->800 sind 88s  siehe auch:stdzeidausschalten
 	const uint32_t stdzeidausschalten = 800;  //8Sekunden

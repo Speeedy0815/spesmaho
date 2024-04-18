@@ -2,11 +2,12 @@
 #ifndef VERSIONHEADER
 #define VERSIONHEADER
 
-const double GLOBALVERSION = 1.59;
+const double GLOBALVERSION = 1.60;
 
 
 /*
 XXXX BEGIN
+1.60	IR Bibiliothek aktualisiert. Achtung, inkompatible Code Änderung!!!! IR Codes haben sich geändert
 1.59	DMX (das einfache auf den Arduinos) initialisiert die ersten 11 Devices auf 0
 1.58	Can optimiert und auf Adafruit-Bibliothek umgebaut Displays müüssen jetzt auch Kommunikation zum Server haben
 1.57	Onewire optimiert

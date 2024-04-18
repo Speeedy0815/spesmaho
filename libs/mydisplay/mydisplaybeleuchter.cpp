@@ -1,7 +1,7 @@
 #include "mydisplaybeleuchter.h"
 
 
-DiditalBeleuchtungDisplay::DiditalBeleuchtungDisplay(myBasisHW* Hardware, uint8_t ledpin)
+DigitalBeleuchtungDisplay::DigitalBeleuchtungDisplay(myBasisHW* Hardware, uint8_t ledpin)
 {
 	_Hardware = Hardware;
 	_ledpin = ledpin;
@@ -11,22 +11,24 @@ DiditalBeleuchtungDisplay::DiditalBeleuchtungDisplay(myBasisHW* Hardware, uint8_
 	_Hardware->set_as_Output(_ledpin);
 
 }
-void DiditalBeleuchtungDisplay::schaltestate()
+void DigitalBeleuchtungDisplay::schaltestate()
 {
 	_Hardware->setBit(_ledpin, _state);
 }
 
-void	DiditalBeleuchtungDisplay::schalteAn()
+void	DigitalBeleuchtungDisplay::schalteAn()
 {
+	
 	_state = true;
 	schaltestate();
 }
-void	DiditalBeleuchtungDisplay::schalteAus()
+void	DigitalBeleuchtungDisplay::schalteAus()
 {
+	
 	_state = false;
 	schaltestate();
 }
-bool	DiditalBeleuchtungDisplay::istDisplayAn()
+bool	DigitalBeleuchtungDisplay::istDisplayAn()
 {
 	return _state;
 }
@@ -44,10 +46,12 @@ bool	DiditalBeleuchtungDisplay::istDisplayAn()
 
 void	PWMBeleuchtungDisplay::schalteAn()
 {
+	debugln("Display an");
 	sollstate = true;
 }
 void	PWMBeleuchtungDisplay::schalteAus()
 {
+	debugln("Display aus");
 	sollstate = false;
 }
 bool	PWMBeleuchtungDisplay::istDisplayAn()

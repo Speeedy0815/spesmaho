@@ -1,4 +1,8 @@
 #pragma once
+
+#define MYDEBUG 0
+#include "mydebug.h"
+
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"
 #else
@@ -27,7 +31,7 @@ public:
 
 };
 
-class DiditalBeleuchtungDisplay :public BasisBeleuchtungDisplay
+class DigitalBeleuchtungDisplay :public BasisBeleuchtungDisplay
 {
 private:
 	myBasisHW* _Hardware;
@@ -38,8 +42,8 @@ private:
 protected:
 
 public:
-	~DiditalBeleuchtungDisplay() {};
-	DiditalBeleuchtungDisplay(myBasisHW* Hardware, uint8_t ledpin);
+	~DigitalBeleuchtungDisplay() {};
+	DigitalBeleuchtungDisplay(myBasisHW* Hardware, uint8_t ledpin);
 	void update() {}; // brauche ich hier nicht
 	void schalteAn();
 	void schalteAus();

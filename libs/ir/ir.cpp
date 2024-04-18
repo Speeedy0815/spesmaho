@@ -32,6 +32,7 @@
 //#define RAW_BUFFER_LENGTH  180 
 #endif
 
+#define SUPPRESS_ERROR_MESSAGE_FOR_BEGIN
 #include <IRremote.hpp>
 
 
@@ -46,9 +47,10 @@ MyIr::MyIr(Basiskommunikation* mqtt, uint8_t myREC_PIN, bool enable_send)
 	if (_enable_send)
 	{
 		debugln("Senden einschalten");
-		IrSender.begin(IR_SEND_PIN, DISABLE_LED_FEEDBACK); // Sendepin, sollte ich mal nach außen führen
+		IrSender.begin();
+		IrSender.begin(IR_SEND_PIN); // Sendepin, sollte ich mal nach außen führen
 		IrSender.enableIROut(38); // Call it with 38 kHz to initialize the values printed below
-		IrSender.begin(DISABLE_LED_FEEDBACK);
+		//IrSender.begin(DISABLE_LED_FEEDBACK);
 	}
 
 }
@@ -70,17 +72,14 @@ void MyIr::send(uint8_t type, uint16_t aAddress, uint16_t aData_aCommand)
 
 
 	switch (type) {
-	case 8: debugln("Panasonic");
+	case PANASONIC: debugln("Panasonic");
 		IrSender.sendPanasonic(aAddress, aData_aCommand, 0); // LSB first
-		//sendPanasonic(uint16_t aAddress, uint8_t aData, uint_fast8_t aNumberOfRepeats); // LSB first
 		break;
-	case 14: debugln("RC5");
+	case RC5: debugln("RC5");
 		IrSender.sendRC5(aAddress, aData_aCommand, 0);
-		//sendRC5(uint8_t aAddress, uint8_t aCommand, uint_fast8_t aNumberOfRepeats, bool aEnableAutomaticToggle = true);
 		break;
-	case 7: debugln("NEC");
+	case NEC: debugln("NEC");
 		IrSender.sendNEC(aAddress, aData_aCommand, 0);
-		//sendNEC(uint16_t aAddress, uint8_t aCommand, uint_fast8_t aNumberOfRepeats, bool aSendOnlySpecialNECRepeat = false);
 		break;
 
 	default: Serial.println(F("UNKNOWN")); break;

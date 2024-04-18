@@ -170,7 +170,7 @@ void OTAUpdater::starteupdate()
 {
 	_updatemode = true;
 	benachrichtigealles("Start");
-	setupmyOTA(_mqtt->get_MQTTName(), myWIFISSID, myWIFIPW);
+	setupmyOTA(_mqtt->get_MQTTName(), WIFISSID, WIFIPW);
 	TIM.start(sendezeit, false);
 	otaisstarted = true;
 }

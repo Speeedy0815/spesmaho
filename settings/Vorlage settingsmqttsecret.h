@@ -4,11 +4,11 @@
 #ifndef _SETTINGSMQTTSECRET
 #define _SETTINGSMQTTSECRET
 
-static const char * myMYSERVERADDR = "egal";
-static const char * myMYMQTTUSER = "egal";
-static const char * myMYMQTTPASSW = "egal";
-static const char * myWIFISSID = "egal";
-static const char * myWIFIPW = "egal";
+static const char * MYSERVERADDR = "egal";
+static const char * MYMQTTUSER = "egal";
+static const char * MYMQTTPASSW = "egal";
+static const char * WIFISSID = "egal";
+static const char * WIFIPW = "egal";
 
 #endif // _SETTINGSMQTTSECRET
 
