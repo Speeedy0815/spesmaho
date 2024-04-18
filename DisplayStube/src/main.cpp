@@ -66,20 +66,23 @@ void setup()
 
 
 
-	CANMQTT mqtt(CANaddrloader.getAddr(), &canHW); //nummer, rx und tx pin
+	//CANMQTT mqtt(CANaddrloader.getAddr(), &canHW); //nummer, rx und tx pin
 	//ESP_Wifi_MQTT mqtt(MYSERVERADDR, MYMQTTNAME, MYMQTTUSER, MYMQTTPASSW, WIFISSID, WIFIPW);
-	//SerialDummy mqtt(MYMQTTNAME);
+	SerialDummy mqtt(MYMQTTNAME);
 
 	GlobInterfaces.addInt(&mqtt);
 	GlobInterfaces.addInt(&CANaddrloader);
 	//###########################################################################################################################
 	myBasisHW_GPIO HARDW;  //HARDW()         //warum ohne Klammern???? CCC? Das verstehe ich nicht
 	GlobInterfaces.addInt(&HARDW);
+	
 	//###########################################################################################################################
 	const uint8_t ADDRMCP1 = 0;
 	myBasisHW_MCP MCP1(ADDRMCP1);
 
 	GlobInterfaces.addInt(&MCP1);
+
+	
 	////###########################################################################################################################
 	const uint8_t MTXzeil = 3;
 	const uint8_t MTXspal = 3;
@@ -89,6 +92,8 @@ void setup()
 
 	myTastermatrix MTX(&mqtt, &MCP1, MTXspal, MTXzeil, MTXSpalP, MTXZeilP, MTXkeys);
 	GlobInterfaces.addInt(&MTX);
+	
+	
 	//###########################################################################################################################
 	uint8_t       MCUSETTINGS1eingangssadressenlen = 2;
 	uint8_t       MCUSETTINGS1eingangsadressenpin[] = { 8,11 };  // bewmelder, taste auf incgeber
@@ -187,7 +192,7 @@ void setup()
 	DISP.setOTAUpdater(&OTA);
 	//###########################################################################################################################
 
-
+    
 	HAUPTSCHLEIFE();
 
 }
