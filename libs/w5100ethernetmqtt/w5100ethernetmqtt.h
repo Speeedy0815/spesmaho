@@ -17,7 +17,8 @@
 #include <Ethernet.h>  
 #endif
 #if defined(ESP32) ||  defined(ESP8266)
-#include "Ethernetega.h"
+//#include "Ethernetega.h"
+#include <Ethernet.h>  
 #endif
 #if defined(ESP32) ||  defined(ESP8266)
 

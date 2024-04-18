@@ -27,6 +27,10 @@
 			"path": "DisplayStube"
 		},
 		{
+			"name": "Audiokistel",
+			"path": "Audiokistel"
+		},
+		{
 			"path": "settings"
 		}
 	],
