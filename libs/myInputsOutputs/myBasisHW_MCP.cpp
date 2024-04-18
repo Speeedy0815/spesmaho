@@ -17,7 +17,7 @@ void myBasisHW_MCP_Resetit(uint8_t pin)
 myBasisHW_MCP::myBasisHW_MCP(uint8_t mcpaddr)
 {
 
-	mymcp.begin_I2C(mcpaddr);
+	mymcp.begin(mcpaddr);
 	update();
 }
 
@@ -49,13 +49,12 @@ void myBasisHW_MCP::set_as_Input(uint8_t nr)
 void myBasisHW_MCP::set_as_Input_Pullup(uint8_t nr)
 {
 	//Serial.print("set as input pullup"); Serial.println(nr);
-	mymcp.pinMode(nr, INPUT_PULLUP);
-	//pullUp(nr, HIGH);
-	//set_as_Input(nr);
+	mymcp.pullUp(nr, HIGH);
+	set_as_Input(nr);
 }
 void myBasisHW_MCP::activatePinForInterrupt(uint8_t nr,uint8_t mode)
 {
-	//Kommentar ist aus einem Beispiel �bernommen
+	//Kommentar ist aus einem Beispiel übernommen
 	// We mirror INTA and INTB, so that only one line is required between MCP and Arduino for int reporting
 	// The INTA/B will not be Floating 
 	// INTs will be signaled with a LOW

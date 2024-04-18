@@ -10,7 +10,7 @@
 #endif
  
  
-#include "Adafruit_MCP23X17.h"
+#include "Adafruit_MCP23017.h"
 #include "myBasisHW.h"
 
 void myBasisHW_MCP_Resetit(uint8_t pin);  // Use it if you have ResetPin
@@ -18,7 +18,7 @@ void myBasisHW_MCP_Resetit(uint8_t pin);  // Use it if you have ResetPin
 class myBasisHW_MCP : public myBasisHW
 {
 private:
-	Adafruit_MCP23X17 mymcp;
+	Adafruit_MCP23017 mymcp;
 	uint16_t abbild;
 protected:
 
