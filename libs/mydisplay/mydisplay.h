@@ -12,11 +12,11 @@
 #endif
 #include "basiskommunikation.h"
 
-#include "myhdc108.h"
+
 #include <XPT2046_Touchscreen.h> 
 #include "basisinterface.h"
 
-#include "myheiztemp.h"
+
 
 #include <SPI.h>
 
@@ -46,9 +46,12 @@
 
 
 
-
-
-
+//cs tft 4   -- am aneren 15
+//cs  touch 33
+// miso 19
+// mosi 23
+//sck 18
+//
 
 class MyDisp : public BasisInterface, public updatewuenscher
 {
@@ -63,7 +66,7 @@ private:
 	bool updatemode = false;
 	myEncoderESP* _Encoder;
 
-	HeizTemp* _heizReglung;
+	
 	myTimer Hintergrundbeleuchtungstimer;
 	uint16_t Hintergrundbeleuchtungstimerzeit = 10;
 
