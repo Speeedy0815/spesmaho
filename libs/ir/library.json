@@ -4,8 +4,8 @@
     "dependencies": [
        {
             "name": "IRremote",
-            "owner":"z3t0",
-            "version":"4.2.0"
+            "owner":"z3t0"
+         
         }
 
     ]

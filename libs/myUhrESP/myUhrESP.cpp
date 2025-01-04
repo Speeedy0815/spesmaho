@@ -9,8 +9,7 @@ void myUhrESP::setUhrzeit(unsigned long timestamp)
 	ESPrtc.setTime(timestamp);
 	_istgestellt = true;
 }
-uint32_t myUhrESP::getUhrzeit()
-{}
+ 
 bool myUhrESP::istgestellt()
 {
 	return _istgestellt;

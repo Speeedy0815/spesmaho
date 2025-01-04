@@ -24,7 +24,7 @@ private:
 
 public:
 	void setUhrzeit(unsigned long  timestamp);
-	uint32_t getUhrzeit();
+	 
 	bool istgestellt();
 	int getSecond();
 	int getDay();

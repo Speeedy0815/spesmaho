@@ -20,12 +20,12 @@ void EthernetMQTT::subscribeextra(const char* topic)
 	Serial.println(topic);
 	MqttClient.subscribe(topic); //Identify Controller --> Y muss gesendet werden // Antwort in !
 }
-EthernetMQTT::EthernetMQTT(const char* server, const char* MYMQTTNAME, const char* MYMQTTUS, const char* MYMQTTPW, Client* client, uint16_t brokerport)
+EthernetMQTT::EthernetMQTT(const char* server, const char* MYMQTTNAME, const char* MYMQTTUS, const char* MYMQTTPW, Client& client, uint16_t brokerport)
 	:
 	Basiskommunikation(MYMQTTNAME),
 	MqttClient(server, brokerport, client)
 {
-	this->_client = client;
+	this->_client = &client;
 	_MQTTPW = MYMQTTPW;
 	_MQTTUS = MYMQTTUS;
 

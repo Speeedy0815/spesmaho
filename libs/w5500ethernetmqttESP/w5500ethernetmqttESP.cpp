@@ -20,9 +20,8 @@ void GLOGetETHMacFromWifiMac(uint8_t* puffermac)
 
 MqttCommunication::MqttCommunication(const char* server, uint8_t* mac, const char* MYMQTTNAME, const char* MYMQTTUS, const char* MYMQTTPW, uint8_t Resetpin, uint8_t CSPin)
 	:
-	EthernetMQTT(server, MYMQTTNAME, MYMQTTUS, MYMQTTPW, *ethClient, 1883)
+	EthernetMQTT(server, MYMQTTNAME, MYMQTTUS, MYMQTTPW, ethClient, 1883)
 {
-	ethClient = new EthernetClient();
 	init(mac, Resetpin, CSPin);
 }
 MqttCommunication::MqttCommunication(const char* server, uint8_t* mac, const char* MYMQTTNAME, const char* MYMQTTUS, const char* MYMQTTPW, uint8_t Resetpin)
@@ -70,10 +69,7 @@ void MqttCommunication::init(uint8_t* mac, uint8_t Resetpin, uint8_t cspin)
 	this->update(); //einmalig aufrufen zum verbinden
 }
 
-MqttCommunication::~MqttCommunication()
-{
-    delete ethClient;
-}
+
 
 
 

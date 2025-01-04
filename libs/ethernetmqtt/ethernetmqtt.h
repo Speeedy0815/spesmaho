@@ -22,7 +22,7 @@ class EthernetMQTT : public Basiskommunikation
 {
 public:
 
-	EthernetMQTT(const char* server, const char* MYMQTTNAME, const char* MYMQTTUS, const char* MYMQTTPW, Client* client, uint16_t brokerport);
+	EthernetMQTT(const char* server, const char* MYMQTTNAME, const char* MYMQTTUS, const char* MYMQTTPW, Client& client, uint16_t brokerport);
 	~EthernetMQTT() {};
 	void update();
 	void subscribeextra(const char* topic);  // für den CAN geacht

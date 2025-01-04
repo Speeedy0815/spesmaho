@@ -2,7 +2,7 @@
     "name": "canhardESP",
     "version": "1.0.0",
     "dependencies": [ 
-       {"name": "ACAN_ESP32", "version":"1.1.2","owner":"pierremolinaro"
+       {"name": "ACAN_ESP32","owner":"pierremolinaro"
     }
     ]
 }

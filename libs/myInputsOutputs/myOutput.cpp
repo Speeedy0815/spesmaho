@@ -130,7 +130,6 @@ bool  myOutput::callbackismineanddo(char* topic, byte* payload, unsigned int len
 
 void myOutput::update()
 {
-	
 	if (Anzahltodo > 0)
 	{
 		uint32_t jetzt = millis();

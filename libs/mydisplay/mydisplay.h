@@ -1,6 +1,6 @@
 #pragma once
 
-#define MYDEBUG 1
+#define MYDEBUG 0
 #include "mydebug.h"
 
 
@@ -58,9 +58,9 @@ private:
 	uint8_t updatewunschzaehler = 0;
 	uint8_t resetwunschzaehler = 0;
 	bool updatemode = false;
-	myEncoderESP* _Encoder;
+	myEncoderESP* _Encoder = NULL;
 
-	HeizTemp* _heizReglung;
+	HeizTemp* _heizReglung = NULL;
 	myTimer Hintergrundbeleuchtungstimer;
 	uint16_t Hintergrundbeleuchtungstimerzeit = 10;
 
