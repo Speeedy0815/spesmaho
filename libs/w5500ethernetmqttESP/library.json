@@ -1,0 +1,8 @@
+{
+    "name": "w5500ethernetmqttESP",
+    "version": "1.0.0",
+    "dependencies": [ 
+       {"name": "Ethernet2", "version":"Ethernet2","owner":"adafruit"
+    }
+    ]
+}
