@@ -35,7 +35,7 @@ private:
  
 
 	//functions
-	void mysendmessage(char* inhalt);
+	void mysendmessage(const char* inhalt);
 	void sendestate();
 public:
 	

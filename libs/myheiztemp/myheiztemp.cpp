@@ -205,13 +205,13 @@ void HeizTemp::sendHeizungStatus(bool force)
 	static bool heizefussbodenvorher = 0;
 	if ((heizefussboden != heizefussbodenvorher) || force)
 	{
-		_mqtt->sendmessage(_MYMQTTANTFB, heizefussboden);
+		_mqtt->sendmessage(_MYMQTTANTFB, (int32_t) heizefussboden);
 		heizefussbodenvorher = heizefussboden;
 	}
 	static bool heizeheizkbodenvorher = 0;
 	if ((heizeHeizk != heizeheizkbodenvorher) || force)
 	{
-		_mqtt->sendmessage(_MYMQTTANTHK, heizeHeizk);
+		_mqtt->sendmessage(_MYMQTTANTHK, (int32_t) heizeHeizk);
 		heizeheizkbodenvorher = heizeHeizk;
 	}
 }

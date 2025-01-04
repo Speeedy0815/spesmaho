@@ -44,7 +44,7 @@ void myOutput::setBlink(uint32_t HalfPeriod_ms, uint32_t periodes)
 
 void myOutput::refresh()
 {
-	
+	debugln("refresh1");
 	bool neu = _lastZustand != _logiktauschen;
 	_Hardware->set_as_Output(_hardwarepinnummer);
 	_Hardware->setBit(_hardwarepinnummer, neu);
@@ -63,23 +63,27 @@ void myOutput::onoff(bool anaus)
 
 void myOutput::_sende_nachricht(bool an)
 {
+	
 	char neuespayload[2];
-	char puffer[50];
-	uint8_t ende = strlen(_topic);
-	strcpy(puffer, _topic);
+	char puffer[50] = {}; 
+	strncpy(puffer, _topic, sizeof(puffer) - 3); 
+	puffer[sizeof(puffer)-3] = '\0'; // Sicherheitshalber Nullterminierung
+	puffer[sizeof(puffer)-1] = '\0'; // Sicherheitshalber Nullterminierung
 
 
 	if (_logischenummer != 0xFF)
 	{
+		size_t ende = strlen(puffer);
 		puffer[ende] = (_logischenummer / 10) + '0';
 		puffer[ende + 1] = (_logischenummer % 10) + '0';
 		puffer[ende + 2] = 0x00; //Stringende
 
-		neuespayload[0] = an + '0'; // 0 oder 1 an, oder aus
+		neuespayload[0] = an ? '1' : '0'; //0 oder1 an, oder aus
 		neuespayload[1] = 0x00;
 
 		_mqtt->sendmessage(puffer, neuespayload);
 	}
+	
 }
 
 
@@ -93,42 +97,30 @@ bool  myOutput::callbackismineanddo(char* topic, byte* payload, unsigned int len
 		return false;
 	if (length > 12)
 		return false;
-	if ((payload[0] != 'A') && (payload[0] != 'T') && (payload[0] != 'B') && (payload[0] != 'G'))
-		return false;
-
-	uint8_t binichs = (payload[1]-'0')*10 +	(payload[2]-'0');
-	
-	if (binichs != _logischenummer)
-	{ 
+	if ((payload[0] != 'A') && (payload[0] != 'T') && (payload[0] != 'B') && (payload[0] != 'G')) {
 		return false;
 	}
 
+	uint8_t binichs = (payload[1] - '0') * 10 + (payload[2] - '0');
+	if (binichs != _logischenummer) {
+		return false;
+	}
 
-	if (payload[0] == 'A')
-	{
-		bool OnOff = (payload[3] == '1'); 
-		setState(OnOff);
-		return true;
-	}
-	if (payload[0] == 'G')
-	{
-		toggle();
-		return true;
-	}
-	else if (payload[0] == 'T')
-	{ 
-		uint32_t Zeit_zehntelsekunden = zahlaustextvonlen((char*)payload, 3, 6);
-		
-		setTimer((uint32_t)Zeit_zehntelsekunden * 100); 
-		return true;	
-			
-	}
-	else if (payload[0] == 'B')
-	{ 
-		uint32_t anzahl = zahlaustextvonlen((char*)payload, 9, 3);
-		uint32_t Zeit_zehntelsekunden = zahlaustextvonlen((char*)payload, 3, 6);
-		setBlink((uint32_t)Zeit_zehntelsekunden * 100, anzahl);  // setblink auf Basis von millisekunden  --> daher umrechnung mal 100
-		return true;
+	switch(payload[0]) {
+		case 'A':
+			setState(payload[3] == '1');
+			return true;
+		case 'G':
+			toggle();
+			return true;
+		case 'T':
+			setTimer(zahlaustextvonlen((char*)payload, 3, 6) * 100);
+			return true;
+		case 'B':
+			uint32_t anzahl = zahlaustextvonlen((char*)payload, 9, 3);
+			uint32_t Zeit_zehntelsekunden = zahlaustextvonlen((char*)payload, 3, 6);
+			setBlink(Zeit_zehntelsekunden * 100, anzahl);
+			return true;
 	}
 	return false;
 }

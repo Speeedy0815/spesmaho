@@ -32,6 +32,10 @@
 		},
 		{
 			"path": "settings"
+		},
+		{
+			"name": "WLED",
+			"path": "../WLED"
 		}
 	],
 	"settings": {}

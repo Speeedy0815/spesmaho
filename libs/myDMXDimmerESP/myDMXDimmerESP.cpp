@@ -5,7 +5,7 @@
 
 myDMXDimmerESP::myDMXDimmerESP()
 {
-	DMX::Initialize(output);
+	DMX::Initialize(DMXDirection::output);
 
 	//dmx.init(maxChan);
 

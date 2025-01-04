@@ -13,25 +13,8 @@
 
 #include "ethernetmqtt.h"
 
-#if defined(__AVR__)
-#include <Ethernet.h>  
-#endif
-#if defined(ESP32) ||  defined(ESP8266)
-//#include "Ethernetega.h"
-#include <Ethernet.h>  
-#endif
-#if defined(ESP32) ||  defined(ESP8266)
-
-#ifdef ESP32
  
-#include "Wifi.h"
-#else
-#include <ESP8266WiFi.h>
-#endif
-
-void GLOGetETHMacFromWifiMac(uint8_t* puffermac);
-#endif
-
+#include <Ethernet.h>  
 #include "hilfe.h"
 
 

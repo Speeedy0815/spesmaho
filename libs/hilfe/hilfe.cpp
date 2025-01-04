@@ -19,13 +19,27 @@ uint8_t plausibel(uint8_t zahl, uint8_t min, uint8_t max)
 
 uint32_t zahlaustextvonlen(const char* eingabe, uint8_t stellebeginn, uint8_t len)
 {
+    if (eingabe == nullptr || len == 0) {
+        return 0;  // Keine Eingabe oder ungültige Länge
+    }
 
-	char* hilfsstring = new char[len + 1]; // für Stringende
-	memcpy(hilfsstring, eingabe + stellebeginn, len);
-	hilfsstring[len] = 0;//Stringende
-	uint32_t ergebnis = atol(hilfsstring);
-	delete[] hilfsstring;
-	return ergebnis;
+    // Sicherstellen, dass genügend Speicher vorhanden ist
+    char* hilfsstring = new char[len + 1];  // +1 für Null-Terminierung
+    if (hilfsstring == nullptr) {
+        return 0;  // Fehler, wenn kein Speicher zugewiesen werden kann
+    }
+
+    // Kopiere den relevanten Teil der Eingabe in hilfsstring
+    memcpy(hilfsstring, eingabe + stellebeginn, len);
+    hilfsstring[len] = '\0';  // Null-Terminierung am Ende des Strings
+
+    // Konvertiere den String in eine Zahl (beachte: atol gibt 0 zurück bei ungültigen Eingaben)
+    uint32_t ergebnis = atol(hilfsstring);
+
+    // Speicher freigeben
+    delete[] hilfsstring;
+
+    return ergebnis;
 }
 
 
@@ -116,10 +130,6 @@ void globaleinitialisierung()
 	WiFi.mode(WIFI_OFF);
 	btStop();
 #endif
-
-
-
-
 
 }
 

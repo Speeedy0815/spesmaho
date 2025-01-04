@@ -23,6 +23,7 @@
 #include "myotaupdater.h"
 // Globale Settings
 #include "mydisplaybeleuchter.h"
+ 
 
 
 #include "canmqttclient.h"
@@ -175,15 +176,16 @@ void setup()
 	DisplayHeizungsteil HZ(&DISP, &TEMPHUM, &Heizungsreglung);
 	GlobInterfaces.addInt(&HZ);
 
+	 
 
 	//##########################################################################################################################
 	bool onlyuseresetter = false;
-  uint32_t Resetzeit = 300000; 
+    uint32_t Resetzeit = 300000; 
 	WTD GLOBWathdog(&mqtt, onlyuseresetter,Resetzeit);
 	GlobInterfaces.addInt(&GLOBWathdog);
 	//###########################################################################################################################
    
-  const char* Firmwarename = "DisplayStube.bin";
+    const char* Firmwarename = "DisplayStube.bin";
 	OTAUpdater OTA(&mqtt,Firmwarename);
 	OTA.setupdateW(&DISP);
 	GlobInterfaces.addInt(&OTA);

@@ -7,12 +7,10 @@ MyBeep::MyBeep(Basiskommunikation* mqtt)
 
 	_mqtt = mqtt;
 
-	ledcSetup(ledChannel, freq, resolution);
 
-	// attach the channel to the GPIO to be controlled
-	ledcAttachPin(ledPin, ledChannel);
-	ledcWrite(ledChannel, 0);
-	TIMER.start(TIMERZeit, false);
+	ledcAttach(ledPin,freq,resolution);
+	ledcWrite(ledPin, 0);
+	//TIMER.start(TIMERZeit, false);
 }
 
 
@@ -21,21 +19,19 @@ void MyBeep::update()
  
 	if (TIMER.update_darfich())
 	{
-		if (dauer > 0)
-		{
-			dauer --;
-		}
+		debugln("aus");
+		ledcWrite(ledPin, 0);  //ausschalten
+		TIMER.stop(); 
 	}
 
-	if (dauer <= 0)
-	{
-		ledcWrite(ledChannel, 0);  //ausschalten
-	}
+ 
+		
+ 
 
 }
 bool  MyBeep::callbackismineanddo(char* topic, byte* payload, unsigned int length)
 {
-	if (length < 3)
+	if (length < 4)
 		return false;
 	if (length > 10)
 		return false;
@@ -45,15 +41,57 @@ bool  MyBeep::callbackismineanddo(char* topic, byte* payload, unsigned int lengt
 	//0-9 Tonhöhe
 	//0-9 Dauer
 
-	freq = 1000 - (payload[1] - '0' - 5) * 100;
-	debug("Frequenz: ");
-	debugln(freq);
+	
 
-	dauer = 2 + ((payload[2] - '0') * 10);
+	dauer = ( ((payload[1] - '0') * 100))+100;  //100-1100ms
+	debug("Dauer: ");
+	debugln(dauer);
+	
+	uint8_t oktave = payload[3] - '0';
+	debug("Oktave: ");
+	debugln(oktave);
+	
+	note_t meineNote =  NOTE_C;
+	char noteroh = payload[2];
 
-	ledcSetup(ledChannel, freq, resolution);
-	ledcWrite(ledChannel, 127);  
-	TIMER.start(TIMERZeit, false);  //Timerreset, dass das piepsen nicht sofort wieder ausgeschaltet wird
+
+
+	switch (noteroh) {
+        case 'C':
+            meineNote =  NOTE_C; break;
+        case 'c':
+            meineNote =  NOTE_Cs; break;
+        case 'D':
+            meineNote =  NOTE_D; break;
+        case 'd':
+            meineNote =  NOTE_Eb; break;
+        case 'E':
+            meineNote =  NOTE_E; break;
+        case 'F':
+            meineNote =  NOTE_F; break;
+        case 'f':
+            meineNote =  NOTE_Fs; break;
+        case 'G':
+            meineNote =  NOTE_G; break;
+        case 'g':
+            meineNote =  NOTE_Gs; break;
+        case 'A':
+            meineNote =  NOTE_A; break;
+        case 'b':
+            meineNote =  NOTE_Bb; break;
+        case 'B':
+            meineNote =  NOTE_B; break;
+    }
+
+
+
+	debug("noteroh: ");
+	debugln(noteroh);
+	debug("note: ");
+	debugln(meineNote);
+
+	ledcWriteNote(ledPin,meineNote,oktave);
+	TIMER.start(dauer, false);  //Timerreset, dass das piepsen nicht sofort wieder ausgeschaltet wird
 
 	return true;
 }

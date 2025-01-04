@@ -1,6 +1,6 @@
 #pragma once
 
-#define MYDEBUG 0
+#define MYDEBUG 1
 #include "mydebug.h"
 
 
@@ -12,11 +12,11 @@
 #endif
 #include "basiskommunikation.h"
 
-
+#include "myhdc108.h"
 #include <XPT2046_Touchscreen.h> 
 #include "basisinterface.h"
 
-
+#include "myheiztemp.h"
 
 #include <SPI.h>
 
@@ -39,19 +39,13 @@
 
 
 #define TFT_GREY 0x5AEB
-#define _sclk     25  //GPIO25
-//#define _mosi     32  //GPIO32 
-//#define _miso     39  //GPIO39
-#define TOUCH_CS  33  //GPIO33
+#define TOUCH_CS  33  //GPIO33  --> ggf nach außen bringen
 
 
 
-//cs tft 4   -- am aneren 15
-//cs  touch 33
-// miso 19
-// mosi 23
-//sck 18
-//
+
+
+
 
 class MyDisp : public BasisInterface, public updatewuenscher
 {
@@ -66,7 +60,7 @@ private:
 	bool updatemode = false;
 	myEncoderESP* _Encoder;
 
-	
+	HeizTemp* _heizReglung;
 	myTimer Hintergrundbeleuchtungstimer;
 	uint16_t Hintergrundbeleuchtungstimerzeit = 10;
 
@@ -82,7 +76,7 @@ private:
 
 	double  aussentemperatur = 999;
 	byte warntext[50];
-	uint8_t mywarntextfarbe = 0;  //0 schwarz (unsichtbar) 1:weiÃŸ 2:rot 3:grÃ¼n 4:blau 5:grau
+	uint8_t mywarntextfarbe = 0;  //0 schwarz (unsichtbar) 1:weiß 2:rot 3:grün 4:blau 5:grau
 
 	uint8_t lautstaerke = 0; //0-100
 	int8_t mondph = -1; //0 Neumond,1-4 zunehmend 5 Vollmond,6-9 abnehmend   -1 disabled
@@ -102,7 +96,7 @@ private:
 	void aktualisiereWetter();
 	 
 	void ZeichneButton(uint8_t nr, bool enabled, uint8_t Farbe, const char* bildname, bool bildname_ist_text);
-	void aktualisiereWarnung(); //das wird nicht mit im aktualisiere Display aufgerufen  --> nur wenn vom Server da was kommt (da das Ã¼berprÃ¼fen, ob sich was Ã¤ndert schwierig ist)
+	void aktualisiereWarnung(); //das wird nicht mit im aktualisiere Display aufgerufen  --> nur wenn vom Server da was kommt (da das überprüfen, ob sich was ändert schwierig ist)
 
 	void schalteDisplayan();
 	bool sollDislayan() { return ((zeitbisausgeschaltetwird > 0) || (true == updatemode)); };  // wenn Update --> Bildschirm nicht mehr ausschalten
@@ -110,7 +104,7 @@ private:
 
 
 	//myTimer Hintergrundbeleuchtungstimer;
-	//uint16_t Hintergrundbeleuchtungstimerzeit = 10; //ms  --> achtung nicht Ã¤ndern, der Timer wird doppelt verwendet!!!!!
+	//uint16_t Hintergrundbeleuchtungstimerzeit = 10; //ms  --> achtung nicht ändern, der Timer wird doppelt verwendet!!!!!
 
 	uint32_t zeitbisausgeschaltetwird = 0; //in 10msTaktung  -->800 sind 88s  siehe auch:stdzeidausschalten
 	const uint32_t stdzeidausschalten = 800;  //8Sekunden
@@ -147,7 +141,7 @@ public:
 	TFT_eSPI* getTFT() { return &tft; };
 	void setupdatemode(bool mode);
 	bool isUpdatemode() { return updatemode; }
-	MyDisp(Basiskommunikation* mqtt, BasisBeleuchtungDisplay* Beleucht, myEncoderESP* Encoder, myUhrBasis* Uhrzeit, uint8_t respin, uint8_t cspin);
+	MyDisp(Basiskommunikation* mqtt, BasisBeleuchtungDisplay* Beleucht, myEncoderESP* Encoder, myUhrBasis* Uhrzeit);
 	void update();
 	bool callbackismineanddo(char* topic, byte* payload, unsigned int length);
 	void setOTAUpdater(OTAUpdater* ota) { Serial.println("Bind OTA on Display"); _OTAupdater = ota; };

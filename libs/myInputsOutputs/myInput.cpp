@@ -1,3 +1,9 @@
+//Hinweis hier hat chatgpt noch weitere hinweise gegeben:
+//BUTT.attachClick([this](){ this->mysendmessage("C"); });
+
+
+
+
 
 #include "myInput.h"
 
@@ -28,7 +34,7 @@ void myInput::begin(bool currentState)
 	DB20.begin(currentState);
 }
 
-void myInput::mysendmessage(char* inhalt)
+void myInput::mysendmessage(const char* inhalt)
 {
 	debug("sendmymessage ");
 	debugln(inhalt);
@@ -43,11 +49,11 @@ void myInput::sendestate()
 	bool state = DB20.read();
 	if (state)
 	{
-		mysendmessage((char*)"H");
+		mysendmessage("H");
 	}
 	else
 	{
-		mysendmessage((char*)"L");
+		mysendmessage("L");
 	}
 }
 
@@ -65,29 +71,35 @@ bool  myInput::callbackismineanddo(char* topic, byte* payload, unsigned int leng
 	}
 	else // nur genau den einen abfragen
 	{
-		uint8_t Eingangssnummer = ((payload[1] - 48) * 10) + (payload[2] - 48);
-		if (this->pinnummer == Eingangssnummer)
-		{
-			sendestate();
-			return true;
+		if (length >= 3) {
+			uint8_t Eingangssnummer = ((payload[1] - '0') * 10) + (payload[2] - '0');
+			if (this->pinnummer == Eingangssnummer) 
+			{
+				sendestate();
+				return true;
+			}
 		}
 		return false;
 	}
 }
 
 
+
+
+
+
 void myInput::update(bool currentState)
 {
 	DB20.update(currentState);
 	BUTT.tick(currentState);
-	if (DB20.rose()) { mysendmessage((char*)"R"); }
-	if (DB20.fell()) { mysendmessage((char*)"F"); }
-	if (BUTT.nowIsclick()) { mysendmessage((char*)"C"); }
-	if (BUTT.nowIsdoubleClick()) { mysendmessage((char*)"D"); }
-	if (BUTT.nowIsmultiClick()) { mysendmessage((char*)"M"); }
-	if (BUTT.nowIslongPressStart()) { mysendmessage((char*)"p"); }
-	if (BUTT.nowIslongPressStop()) { mysendmessage((char*)"l"); }
-	if (BUTT.nowIsduringLongPress()) { mysendmessage((char*)"P"); }
+	if (DB20.rose()) { mysendmessage("R"); }
+	if (DB20.fell()) { mysendmessage("F"); }
+	if (BUTT.nowIsclick()) { mysendmessage("C"); }
+	if (BUTT.nowIsdoubleClick()) { mysendmessage("D"); }
+	if (BUTT.nowIsmultiClick()) { mysendmessage("M"); }
+	if (BUTT.nowIslongPressStart()) { mysendmessage("p"); }
+	if (BUTT.nowIslongPressStop()) { mysendmessage("l"); }
+	if (BUTT.nowIsduringLongPress()) { mysendmessage("P"); }
 }
 
 

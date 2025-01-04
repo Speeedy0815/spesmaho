@@ -3,22 +3,7 @@
 
 
 
-//##############################################################################
-// MqttCommunication  für W5100 Ethernetmodul
-#if defined(ESP32) ||  defined(ESP8266)
-
-void GLOGetETHMacFromWifiMac(uint8_t* puffermac)
-{
-	uint8_t mac[6];
-	WiFi.macAddress(mac);
-	for (uint8_t i = 0; i < 6; i++)
-	{
-		puffermac[i] = mac[i];
-	}
-	puffermac[2] += 1; //Unterschied für Ethernetmacadresse machen;
-}
-#endif
-
+ 
 MqttCommunication::MqttCommunication(const char* server, uint8_t* mac, const char* MYMQTTNAME, const char* MYMQTTUS, const char* MYMQTTPW, uint8_t Resetpin, uint8_t CSPin)
 	:
 	EthernetMQTT(server, MYMQTTNAME, MYMQTTUS, MYMQTTPW, ethClient, 1883)

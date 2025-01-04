@@ -43,7 +43,7 @@ private:
 
 	myTimer TIM;
 	uint32_t sendezeit = 30000;
-	updatewuenscher* _updatew;
+	updatewuenscher* _updatew = 0;
 	const char* _MYMQTTANTWORTADR = "Upd";
 	Basiskommunikation* _mqtt;
 	bool otaisstarted = false;

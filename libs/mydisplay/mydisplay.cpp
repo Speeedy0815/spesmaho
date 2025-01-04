@@ -11,7 +11,7 @@ void MyDisp::setupdatemode(bool mode)
 }
 
 
-MyDisp::MyDisp(Basiskommunikation* mqtt, BasisBeleuchtungDisplay* Beleucht, myEncoderESP* Encoder, myUhrBasis* Uhrzeit, uint8_t respin, uint8_t cspin) :ts(TOUCH_CS)
+MyDisp::MyDisp(Basiskommunikation* mqtt, BasisBeleuchtungDisplay* Beleucht, myEncoderESP* Encoder, myUhrBasis* Uhrzeit) :ts(TOUCH_CS)
 {
 	debugln("start Display");
 	_Uhrzeit = Uhrzeit;
@@ -34,7 +34,7 @@ MyDisp::MyDisp(Basiskommunikation* mqtt, BasisBeleuchtungDisplay* Beleucht, myEn
 
 
 
-	tft.init(respin, cspin);
+	tft.init();
 	tft.setRotation(0);
 
 
@@ -63,7 +63,7 @@ MyDisp::MyDisp(Basiskommunikation* mqtt, BasisBeleuchtungDisplay* Beleucht, myEn
 	Hintergrundbeleuchtungstimer.start(Hintergrundbeleuchtungstimerzeit, true);
 
 
-	debugln("Display an");
+	//debugln("Display an");
 	schalteDisplayan();
 
 
@@ -442,7 +442,7 @@ void MyDisp::update()
 					int8_t buttonergebnis = gibemepressedButton(p);
 					if (buttonergebnis >= 0)
 					{
-						_mqtt->sendmessage(_MYMQTTANTWORTADR, buttonergebnis);
+						_mqtt->sendmessage(_MYMQTTANTWORTADR, (int32_t) buttonergebnis);
 					}
 
 					ButtonSendelimiter.start(sendelimitButton, false);//ResetTime

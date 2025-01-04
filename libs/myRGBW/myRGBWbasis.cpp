@@ -14,6 +14,17 @@ bool  myRGBWbasis::callbackismineanddo(char* topic, byte* payload, unsigned int 
 		return false;
 	if (payload[1] - '0' != _bandnummer)  //richtige Bandnummer?
 		return false;
+		
+	
+	
+	
+	debug("topic ");
+	debugln(topic);
+	debug("payload ");
+	debugln(payload);
+	debug("length ");
+	debugln(length);
+	
 	if (payload[2] == 'H')  //Helligkeit ganzes LEDband
 	{
 		//Serial.println("1");

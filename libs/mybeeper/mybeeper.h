@@ -1,6 +1,6 @@
 #pragma once
 
-#define MYDEBUG 0
+#define MYDEBUG 1
 #include "mydebug.h"
 
 #if defined(ARDUINO) && ARDUINO >= 100
@@ -24,7 +24,7 @@ private:
 
 
 	int freq = 500;
-	const int ledChannel = 0;
+	 
 	const int resolution = 8;
 	const int ledPin = 0;  
 	 

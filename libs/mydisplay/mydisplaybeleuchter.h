@@ -61,7 +61,6 @@ private:
 	uint8_t _ledpin = MYPINUNUSED;
 
 	const int freqhintergrundbel = 5000;
-	const int ledChannelhintergrundbel = 7;  // Achtung --> könnte Dopplungen geben
 	const int resolutionhintergrundbel = 8;
 
 	bool sollstate = false;

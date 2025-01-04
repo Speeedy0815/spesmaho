@@ -38,20 +38,26 @@ bool	DigitalBeleuchtungDisplay::istDisplayAn()
 
 	debugln("init Beleuchtung");
 	//Hintergrundbeleuchtung initialisieren
-	ledcSetup(ledChannelhintergrundbel, freqhintergrundbel, resolutionhintergrundbel);
-	ledcAttachPin(ledpin, ledChannelhintergrundbel);
+	
+ 
+	
+	
+	_ledpin = ledpin;
+	ledcAttach(_ledpin,freqhintergrundbel,resolutionhintergrundbel);  //Todo testen 
 	Hintergrundbeleuchtungstimer.start(Hintergrundbeleuchtungstimerzeit, true);
-
+#if MYDEBUG >= 1	
+	schalteAn();
+#endif
 }
 
 void	PWMBeleuchtungDisplay::schalteAn()
 {
-	debugln("Display an");
+	//debugln("Display an");
 	sollstate = true;
 }
 void	PWMBeleuchtungDisplay::schalteAus()
 {
-	debugln("Display aus");
+	//debugln("Display aus");
 	sollstate = false;
 }
 bool	PWMBeleuchtungDisplay::istDisplayAn()
@@ -77,7 +83,7 @@ void PWMBeleuchtungDisplay::setHintergrund(int8_t val)
 	dutyCycleHintergrundbeleuchtung += val;
 	if (dutyCycleHintergrundbeleuchtung > 255) { dutyCycleHintergrundbeleuchtung = 255; }
 	if (dutyCycleHintergrundbeleuchtung < 0) { dutyCycleHintergrundbeleuchtung = 0; }
-	ledcWrite(ledChannelhintergrundbel, dutyCycleHintergrundbeleuchtung);
+	ledcWrite(_ledpin, dutyCycleHintergrundbeleuchtung);
 
 
 }

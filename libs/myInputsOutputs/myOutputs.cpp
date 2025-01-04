@@ -8,7 +8,11 @@ myOutputs::myOutputs(Basiskommunikation* mqtt, myBasisHW* Hardware, uint8_t anzO
 //	this->_Outplst = Outplst;  // brauche ich das?
 
 
-	Outputliste =  new      (myOutput * [_anzOutp]);
+	Outputliste = new myOutput*[_anzOutp];
+	if (!Outputliste) {
+		Serial.println("ERR");
+		return;
+	}
 	for (uint8_t i = 0; i < _anzOutp; i++)
 	{
 		 
@@ -28,15 +32,24 @@ myOutputs::~myOutputs()
 
 void myOutputs::update()
 {
-	for (uint8_t i = 0; i < _anzOutp; i++)
+	if (refreshtimer.update_darfich())
 	{
-		
-		if (refreshtimer.update_darfich())
+		for (uint8_t i = 0; i < _anzOutp; i++)
 		{
 			Outputliste[i]->refresh();
 			refreshtimer.start(_refreshzeit,false);
-			debugln("Refresh");
-		}			
+			
+		}
+		debugln("Refresh");
+	}	
+		
+		
+	for (uint8_t i = 0; i < _anzOutp; i++)
+	{
+		
+		
+		
+			
 		Outputliste[i]->update();
 	}
 }

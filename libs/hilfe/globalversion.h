@@ -2,11 +2,15 @@
 #ifndef VERSIONHEADER
 #define VERSIONHEADER
 
-const double GLOBALVERSION = 1.60;
+const double GLOBALVERSION = 1.64;
 
 
 /*
 XXXX BEGIN
+1.64    Beeper auf aktuelles Framework aktualisiert. Neues Interface,... kann jetzt Töne spielen
+1.63	IR aktualisiert
+1.62	neues Modul für Ethernet (W5500) an einem ESP32  --> nutzt Ethernet2
+1.61	ganz viel Speicheroptimierung + Adafruit-Bibliothek aktualisiert
 1.60	IR Bibiliothek aktualisiert. Achtung, inkompatible Code Änderung!!!! IR Codes haben sich geändert
 1.59	DMX (das einfache auf den Arduinos) initialisiert die ersten 11 Devices auf 0
 1.58	Can optimiert und auf Adafruit-Bibliothek umgebaut Displays müüssen jetzt auch Kommunikation zum Server haben

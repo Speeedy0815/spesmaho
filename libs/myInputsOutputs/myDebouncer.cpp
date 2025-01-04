@@ -8,9 +8,14 @@
 // DEBOUNCE //
 //////////////
 
-myDebouncer::myDebouncer():previous_millis(0)
-    , interval_millis(10)
-    , state(0) {}
+myDebouncer::myDebouncer()
+    : previous_millis(0),
+      interval_millis(10),
+      state(0),
+      durationOfPreviousState(0), // Hinzugefügte Initialisierung
+      stateChangeLastTime(0)     // Hinzugefügte Initialisierung
+{}
+   
 
 void myDebouncer::interval(uint16_t interval_millis)
 {

@@ -10,7 +10,7 @@ myInputs::myInputs(Basiskommunikation* mqtt, myBasisHW* Hardware, uint8_t anzInp
 	this->_Inplst = Inplst;
 	this->_turnLogic = turnLogic;
 
-	ResTaster = new  (myInput * [_anzInp]);
+	ResTaster = new  myInput * [_anzInp];
 	for (uint8_t i = 0; i < _anzInp; i++)
 	{
 		ResTaster[i] = new myInput(_mqtt, Loglist[i], actLongsend[i]);

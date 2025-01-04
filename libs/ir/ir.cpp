@@ -2,7 +2,7 @@
 
 
 
-#define IR_SEND_PIN         3 // das muss da sein, sonst kommt die Bibliothek nicht klar. scheint ein Fehler in der Biblipothek zu sein
+ 
 
 #if defined(__AVR__)   // Arduino Nanos haben nicht genügend Speicher, deswegen nur Auswahl --> ESPs sollen alles können
 
@@ -46,10 +46,14 @@ MyIr::MyIr(Basiskommunikation* mqtt, uint8_t myREC_PIN, bool enable_send)
 
 	if (_enable_send)
 	{
-		debugln("Senden einschalten");
-		IrSender.begin();
-		IrSender.begin(IR_SEND_PIN); // Sendepin, sollte ich mal nach außen führen
-		IrSender.enableIROut(38); // Call it with 38 kHz to initialize the values printed below
+		Serial.println("ERR not impl");
+		while (1) {};
+		//IrSender.begin();
+		//IrSender.begin(IR_SEND_PIN); // Sendepin, sollte ich mal nach außen führen
+		//habe ich derzeit auf keinem board implementiert, daher raus
+		
+		
+		//IrSender.enableIROut(38); // Call it with 38 kHz to initialize the values printed below
 		//IrSender.begin(DISABLE_LED_FEEDBACK);
 	}
 

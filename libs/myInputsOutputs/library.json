@@ -1,6 +1,6 @@
 {
     "name": "myInputsOutputs",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "dependencies": [
      
         {
@@ -9,6 +9,8 @@
         {
             "name": "Wire"
         }
+		,
+        {"name": "Adafruit MCP23017 Arduino Library", "version":"Adafruit MCP23017 Arduino Library","owner":"adafruit"}
 
     ]
 }
