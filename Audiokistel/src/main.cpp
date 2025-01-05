@@ -49,7 +49,7 @@
   #include "serialdummymqtt.h" 
 #endif
 #if SPD_USE_MQTTVARIANT == 1
-  #include "w5500ethernetmqttESP.h"
+  #include "w5100ethernetmqtt.h"
 #endif
 #if SPD_USE_MQTTVARIANT == 2
   #include "espwifimqtt.h"

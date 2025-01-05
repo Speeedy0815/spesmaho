@@ -38,5 +38,9 @@
 			"path": "../WLED"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.associations": {
+			"cstdint": "cpp"
+		}
+	}
 }
