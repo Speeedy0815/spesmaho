@@ -3,7 +3,8 @@
     "version": "1.0.0",
     "dependencies": [
        {
-            "name": "OneWire"
+            "name": "OneWire",
+			"owner":"paulstoffregen"
         }
     ]
 }

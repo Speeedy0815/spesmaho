@@ -3,7 +3,8 @@
     "version": "1.0.0",
     "dependencies": [
        {
-            "name": "Ethernet"
+            "name": "Ethernet",
+			"owner": "arduino-libraries"
         }
     ]
 }

@@ -3,7 +3,6 @@
 #include "settingsmqttsecret.h"
 #include "serialdummymqtt.h"
 #include "sperrausgang.h"
-#include "lautstaerkeregler.h"
 #include "arduinowatchdog.h"
 #include "myonewire.h" 
 #include "canumsetzer.h"

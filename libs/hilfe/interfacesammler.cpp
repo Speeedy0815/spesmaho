@@ -24,8 +24,10 @@ void Interfacesammler::addInt(BasisInterface* Intf)
 }
 void Interfacesammler::run()
 {
+	#if MYDEBUG >= 1
     unsigned int lastHeapAddr = 0;
     unsigned int lastStackAddr = 0;
+	#endif
 	Serial.println("Start Cyclic");
     while (1)
     {
