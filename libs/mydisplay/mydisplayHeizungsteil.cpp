@@ -42,7 +42,7 @@ void DisplayHeizungsteil::aktualisiereInnentemperatur()
 		return;
 	Innentempvorher = _heizReglung->getIsttemperatur();
 
-	char buffer[30];
+	char buffer[30] = {0};
 	uint8_t len = 0;
 	//isttemperatur
 	_tft->setTextColor(TFT_WHITE, TFT_BLACK);  // Adding a background colour erases previous text automatically
@@ -80,7 +80,7 @@ void DisplayHeizungsteil::aktualisiereSolltemperatur()
 		return;
 
 	solltempvorher = _heizReglung->getSolltemperatur();
-	char buffer[30];
+	char buffer[30] = {0};
 	uint8_t len = 0;
 	// Soll  temperatur
 	_tft->setTextColor(TFT_WHITE, TFT_BLACK);  // Adding a background colour erases previous text automatically
@@ -219,7 +219,7 @@ void DisplayHeizungsteil::aktualisiereLuftfeuchte()
 	if (_temperatursensor->getHuminity() == feuchtevorher)
 		return;
 	feuchtevorher = _temperatursensor->getHuminity();
-	char buffer[30];
+	char buffer[30] = {0};
 	uint8_t len = 0;
 	//Feuchte
 	_tft->setTextColor(TFT_WHITE, TFT_BLACK);  // Adding a background colour erases previous text automatically

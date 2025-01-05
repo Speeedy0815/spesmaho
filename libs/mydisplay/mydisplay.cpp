@@ -186,7 +186,7 @@ void MyDisp::aktualisiereAussentemperatur()
 	if (this->aussentemperatur == aussentempvorher)
 		return;
 	aussentempvorher = this->aussentemperatur;
-	char buffer[30];
+	char buffer[30] = {0};
 	uint8_t len = 0;
 	//aussentemperatur
 	if (this->aussentemperatur < 998)
@@ -348,7 +348,7 @@ void MyDisp::aktualisiereVolumeDreieck()
 	uint16_t Dreiecklinks = 10;
 	uint16_t Dreieckrechts = 230;
 
-	char buffer[30];
+	char buffer[30] = {0};
 	uint8_t len;
 	itoa(lautstaerke, buffer, 10);
 	len = strlen(buffer);
