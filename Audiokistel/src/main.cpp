@@ -7,11 +7,11 @@
 #define SPD_USE_LEDINTERF       1 
    
  
-#define SPD_USE_OTAUPDATER      0  //getestet
+#define SPD_USE_OTAUPDATER      1  //getestet
 #define SPD_USE_WTD             1  //getestet
 #define SPD_USE_SPIFFSSETTINGS  1 
-#define SPD_USE_DMXDIMMER       0  //getestet
-#define SPD_USE_MQTTVARIANT     0  
+#define SPD_USE_DMXDIMMER       1  //getestet
+#define SPD_USE_MQTTVARIANT     2  
             //0: Serial 
             //1: W5500Ethernet     //getestet
             //2: Wifi

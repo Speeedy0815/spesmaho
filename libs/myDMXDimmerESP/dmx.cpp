@@ -190,11 +190,11 @@ void DMX::uart_send_task(void*pvParameters)
         // set line to inverse, creates break signal
         uart_set_line_inverse(DMX_UART_NUM, UART_SIGNAL_TXD_INV);
         // wait break time
-        ets_delay_us(184);
+        esp_rom_delay_us(184);
         // disable break signal
         uart_set_line_inverse(DMX_UART_NUM,  0);
         // wait mark after break
-        ets_delay_us(24);
+        esp_rom_delay_us(24);
         // write start code
         uart_write_bytes(DMX_UART_NUM, (const char*) &start_code, 1);
 #ifndef DMX_IGNORE_THREADSAFETY
