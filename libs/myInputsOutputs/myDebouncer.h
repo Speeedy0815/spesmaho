@@ -9,7 +9,7 @@
 
 #include <inttypes.h>
 
-//Die Klasse basiert auf Bounce2, wurde nur ein wenig abgeändert um das Handling von I2C Eingängen und anderen zu vereinfachen
+//Die Klasse basiert auf Bounce2, wurde nur ein wenig abgeï¿½ndert um das Handling von I2C Eingï¿½ngen und anderen zu vereinfachen
 
 class myDebouncer
 {
@@ -44,10 +44,10 @@ public:
 
 protected:
 
-	unsigned long previous_millis;
-	uint16_t interval_millis;
-	uint8_t state;
-	unsigned long stateChangeLastTime;
-	unsigned long durationOfPreviousState;
+	unsigned long previous_millis = 0;
+	uint16_t interval_millis = 10;
+	uint8_t state = 0;
+	unsigned long stateChangeLastTime = 0;
+	unsigned long durationOfPreviousState = 0;
 
 };

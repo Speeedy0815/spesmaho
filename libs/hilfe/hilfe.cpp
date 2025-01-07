@@ -1,6 +1,17 @@
 #include "hilfe.h"
 
-
+#if defined(ESP32)
+void GLOGetETHMacFromWifiMac(uint8_t* puffermac)
+{
+	uint8_t mac[6];
+	WiFi.macAddress(mac);
+	for (uint8_t i = 0; i < 6; i++)
+	{
+		puffermac[i] = mac[i];
+	}
+	puffermac[2] += 1; //Unterschied für Ethernetmacadresse machen;
+}
+#endif 
 
 
 uint8_t plausibel(uint8_t zahl, uint8_t min, uint8_t max)

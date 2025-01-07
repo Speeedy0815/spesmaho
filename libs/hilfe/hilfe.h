@@ -16,6 +16,7 @@
 
 #if defined(ESP32)
 #include <WiFi.h>
+void GLOGetETHMacFromWifiMac(uint8_t* puffermac);
 #endif
 
 

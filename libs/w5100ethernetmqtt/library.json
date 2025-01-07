@@ -1,6 +1,8 @@
 {
     "name": "w5100ethernetmqtt",
     "version": "1.0.0",
+    "frameworks": ["arduino"],
+    "platforms": ["espressif32", "atmelavr"],
     "dependencies": [
        {
             "name": "Ethernet",
