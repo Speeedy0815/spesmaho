@@ -9,6 +9,11 @@
 //////////////
 
 myDebouncer::myDebouncer()
+    : previous_millis(0),
+      interval_millis(10),
+      state(0),
+      durationOfPreviousState(0), // Hinzugefügte Initialisierung
+      stateChangeLastTime(0)     // Hinzugefügte Initialisierung
 {}
    
 

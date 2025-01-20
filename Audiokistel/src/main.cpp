@@ -1,16 +1,22 @@
+ #include "Arduino.h"
+ 
+ 
+
+
+
 
 #define SPD_USE_INPUTS          1 //getestet
 #define SPD_USE_HW_GPIO         1 //gibts das hier ueberhaupt?
 #define SPD_USE_HW_MCP          1 //getestet
-#define SPD_USE_IR              1 //getestet
-#define SPD_USE_ENCODER         1 
-#define SPD_USE_LEDINTERF       1 
+#define SPD_USE_IR              0 //getestet
+#define SPD_USE_ENCODER         0 
+#define SPD_USE_WLED       1 
    
  
-#define SPD_USE_OTAUPDATER      1  //getestet
-#define SPD_USE_WTD             1  //getestet
+#define SPD_USE_OTAUPDATER      0  //getestet
+#define SPD_USE_WTD             0  //getestet
 #define SPD_USE_SPIFFSSETTINGS  1 
-#define SPD_USE_DMXDIMMER       1  //getestet
+#define SPD_USE_DMXDIMMER       0 //getestet
 #define SPD_USE_MQTTVARIANT     2  
             //0: Serial 
             //1: W5500Ethernet     //getestet
@@ -69,8 +75,8 @@
 #if SPD_USE_OTAUPDATER == 1
   #include "myotaupdater.h"
 #endif
-#if SPD_USE_LEDINTERF == 1
-  #include "ledinterfacews2812.h"
+#if SPD_USE_WLED == 1
+  #include "myWLED.h"
 #endif
 #if SPD_USE_IR == 1
   #include "ir.h" 
@@ -182,15 +188,14 @@ const char* stdnamewennnichhstgesetztist = "/audiokaestel";
 	GlobInterfaces.addInt(&IRGeraet);
 #endif
 	//###########################################################################################################################
-#if SPD_USE_LEDINTERF == 1
+#if SPD_USE_WLED == 1
  
 	const uint8_t BANDNO1 = 0;
-	const uint8_t ANZAHLLEDs1 = 30;
+	
 	const uint8_t MAXBRIGHTNESS1 = 50;
 	const uint8_t LEDWS28PIN1 = 2;
-	const bool SpeichereWertefuerHelligkeitsaenderung = true;
-
-	LEDW2812Interface LEDs1(BANDNO1, ANZAHLLEDs1, LEDWS28PIN1, MAXBRIGHTNESS1, SpeichereWertefuerHelligkeitsaenderung);
+	
+	LEDW2812Interface LEDs1(BANDNO1, LEDWS28PIN1, MAXBRIGHTNESS1);
 	GlobInterfaces.addInt(&LEDs1);
 #endif
 	//###########################################################################################################################	
@@ -230,3 +235,5 @@ const char* stdnamewennnichhstgesetztist = "/audiokaestel";
 
 }
 void loop() {}
+
+

@@ -22,15 +22,11 @@ void Interfacesammler::addInt(BasisInterface* Intf)
 	}
 
 }
-void Interfacesammler::run()
+
+void Interfacesammler::runonce()
 {
-	#if MYDEBUG >= 1
-    unsigned int lastHeapAddr = 0;
-    unsigned int lastStackAddr = 0;
-	#endif
-	Serial.println("Start Cyclic");
-    while (1)
-    {
+ 
+   
         for (uint8_t b = 0; b < count; b++)
         {
             #if MYDEBUG >= 2
@@ -65,6 +61,19 @@ void Interfacesammler::run()
                 debugln(nachher - vorher);
             #endif
         }
+   
+}
+
+void Interfacesammler::run()
+{
+	#if MYDEBUG >= 1
+    unsigned int lastHeapAddr = 0;
+    unsigned int lastStackAddr = 0;
+	#endif
+	Serial.println("Start Cyclic");
+    while (1)
+    {
+        this->runonce();
     };
 }
 

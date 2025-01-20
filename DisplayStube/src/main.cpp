@@ -16,7 +16,7 @@
 #define SPD_USE_SPIFFSSETTINGS  1 
  
  
-#define SPD_USE_MQTTVARIANT     2  
+#define SPD_USE_MQTTVARIANT     3  
             //0: Serial 
             //1: W5500Ethernet      //gibts hier nicht!!!
             //2: Wifi               //getestet

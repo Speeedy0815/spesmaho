@@ -18,5 +18,6 @@ public:
 	void addInt(BasisInterface * Intf);
 	void run();
 	void runcallback(char* topic, byte* payload, unsigned int length);
+	void runonce();
  
 };

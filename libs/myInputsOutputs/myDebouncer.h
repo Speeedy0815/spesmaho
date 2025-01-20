@@ -44,10 +44,10 @@ public:
 
 protected:
 
-	unsigned long previous_millis = 0;
-	uint16_t interval_millis = 10;
-	uint8_t state = 0;
-	unsigned long stateChangeLastTime = 0;
-	unsigned long durationOfPreviousState = 0;
+	unsigned long previous_millis;
+	uint16_t interval_millis;
+	uint8_t state;
+	unsigned long stateChangeLastTime;
+	unsigned long durationOfPreviousState;
 
 };

@@ -2,7 +2,7 @@
 #include "w5100ethernetmqtt.h"
 #include "settingsmqttsecret.h"
 #include "serialdummymqtt.h"
-#include "sperrausgang.h"
+//#include "sperrausgang.h"
 #include "arduinowatchdog.h"
 #include "myonewire.h" 
 #include "canumsetzer.h"
@@ -95,22 +95,27 @@ void setup()
 
 	//Bewegungsmelder, Klingel,????,Wohnungstür(Endlage)
 	uint8_t       MCUSETTINGS1eingangsadressenlog[] = { 9,19,20,21 };
-	bool       MCUSETTINGS1turnlogic[] = { false,true,true,true };
+	bool       MCUSETTINGS1turnlogic[] = { true,true,true,true };
 	bool       MCUSETTINGS1eingangactivatelong[] = { true,true,false,false };
 
 	myInputs IN(&mqtt, &MCP1, MCUSETTINGS1eingangssadressenlen, MCUSETTINGS1eingangsadressenpin, MCUSETTINGS1eingangsadressenlog, MCUSETTINGS1eingangactivatelong, MCUSETTINGS1turnlogic);
 	GlobInterfaces.addInt(&IN);
 	//###########################################################################################################################
+	const bool SpeichereWertefuerHelligkeitsaenderung1 = true;
+	//war das am eingang, ist weg
 	const uint8_t BANDNO1 = 1;
 	const uint8_t ANZAHLLEDs1 = 9;
 	const uint8_t MAXBRIGHTNESS1 = 60;
 	const uint8_t LEDWS28PIN1 = 31;
-	const bool SpeichereWertefuerHelligkeitsaenderung1 = true;
+	
 
 	LEDW2812Interface LEDs1(BANDNO1, ANZAHLLEDs1, LEDWS28PIN1, MAXBRIGHTNESS1, SpeichereWertefuerHelligkeitsaenderung1);
 	GlobInterfaces.addInt(&LEDs1);
+
+
 	//###########################################################################################################################
 
+//kl Bad
 	const uint8_t BANDNO2 = 2;
 	const uint8_t ANZAHLLEDs2 = 9;
 	const uint8_t MAXBRIGHTNESS2 = 60;
@@ -143,14 +148,15 @@ void setup()
 	GlobInterfaces.addInt(&HARDW);
 
 	//###########################################################################################################################
-	const int   LAENGEAUSGAENGE3 = 1;
-	uint8_t     ADRESSENHWAUSGAENGE3[] = { A13 };
-	uint8_t     ADRESSENLOGISCHAUSGAENGE3[] = { 0 };
-	bool        AUSGAENGEDREHEN3[] = { false };
+	const int   LAENGEAUSGAENGE3 = 5;
+	uint8_t     ADRESSENHWAUSGAENGE3[] = { A13,A2,A5,A3,A4 };
+	uint8_t     ADRESSENLOGISCHAUSGAENGE3[] = { 0 ,1,2,3,4};
+	bool        AUSGAENGEDREHEN3[] = { false,true,true,true,true };
 
-	//###########################################################################################################################
-
+	 
 	//Eulen-LED
+	//von oben nach unten
+	// A2 A5 A3 A4 A6 A7
 	myOutputs OUT3(&mqtt, &HARDW, LAENGEAUSGAENGE3, ADRESSENHWAUSGAENGE3, ADRESSENLOGISCHAUSGAENGE3, AUSGAENGEDREHEN3);
 	GlobInterfaces.addInt(&OUT3);
 
