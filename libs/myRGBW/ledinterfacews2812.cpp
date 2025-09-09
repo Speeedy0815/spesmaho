@@ -1,9 +1,10 @@
 #include "ledinterfacews2812.h"
 
 
-LEDW2812Interface::LEDW2812Interface(uint8_t bandnummer, uint8_t Pixelanzahl, uint8_t pin, uint8_t maxbrightness, bool store) :
-	pixels(Pixelanzahl, pin, NEO_GRB + NEO_KHZ800),
-	myRGBWbasis(bandnummer)
+LEDW2812Interface::LEDW2812Interface(uint8_t bandnummer, uint32_t Pixelanzahl,
+                                     uint8_t pin, uint8_t maxbrightness, bool store)
+: myRGBWbasis(bandnummer),    
+  pixels(Pixelanzahl, pin, NEO_GRB + NEO_KHZ800)
 {
 	_store = store;
 	if (_store)

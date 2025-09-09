@@ -31,11 +31,11 @@
 			"path": "Audiokistel"
 		},
 		{
-			"path": "settings"
-		},
-		{
 			"name": "Uhr",
 			"path": "Uhr"
+		},
+		{
+			"path": "settings"
 		}
 	],
 	"settings": {
