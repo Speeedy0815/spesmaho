@@ -2,11 +2,12 @@
 #ifndef VERSIONHEADER
 #define VERSIONHEADER
 
-const double GLOBALVERSION = 1.64;
+const double GLOBALVERSION = 1.65;
 
 
 /*
 XXXX BEGIN
+1.65    Uhr hinzugefügt als Matrixdisplay
 1.64    Beeper auf aktuelles Framework aktualisiert. Neues Interface,... kann jetzt Töne spielen
 1.63	IR aktualisiert
 1.62	neues Modul für Ethernet (W5500) an einem ESP32  --> nutzt Ethernet2

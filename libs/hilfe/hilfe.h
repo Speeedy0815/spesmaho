@@ -29,7 +29,7 @@ void GLOGetETHMacFromWifiMac(uint8_t* puffermac);
 
 
 const uint8_t MYPINUNUSED = 0xff;
-const uint8_t GLOBmaxlenpayload = 35;
+const uint8_t GLOBmaxlenpayload = 100;
 const uint8_t GLOBmaxlentopic = 20;
 
  

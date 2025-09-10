@@ -6,19 +6,19 @@
 #define SPD_USE_HW_GPIO         0 
 #define SPD_USE_HW_MCP          0 
 #define SPD_USE_IR              0  
-#define SPD_USE_BEEPER          0  
-#define SPD_USE_ENCODER         0   
-#define SPD_USE_LEDINTERF       1 
+ 
+#define SPD_USE_LEDMTRX         0 		//getestet
+#define SPD_USE_DMXDIMMER		1
 
-#define SPD_USE_HELL_SENS       0  
+ 
 #define SPD_USE_OTAUPDATER      0    
-#define SPD_USE_WTD             1   	//getestet
-#define SPD_USE_SPIFFSSETTINGS  1 
+#define SPD_USE_WTD             0   	//getestet
+#define SPD_USE_SPIFFSSETTINGS  0 
  
  
 #define SPD_USE_MQTTVARIANT     1  
             //0: Serial 				//getestet
-            //1: W5500Ethernet     
+            //1: W5500Ethernet   	    //getestet
             //2: Wifi               
             //3: CAN
 
@@ -31,8 +31,10 @@
 
 
 
-#if SPD_USE_LEDINTERF == 1
-  #include "ledinterfacews2812.h"
+#if SPD_USE_LEDMTRX == 1
+  #include <myws2812ledmatrix.h>
+
+  #include "myUhrESP.h"  //Echtzeituhr ESP32
 #endif
 
 #if SPD_USE_IR == 1
@@ -63,7 +65,9 @@
 #if SPD_USE_OTAUPDATER == 1
   #include "myotaupdater.h"
 #endif
- 
+#if SPD_USE_DMXDIMMER == 1
+  #include "myDMXDimmerESP.h" 
+#endif
 
 
 
@@ -160,15 +164,24 @@ void setup()
 	GlobInterfaces.addInt(&HELL);
 #endif
 	//###########################################################################################################################
-#if SPD_USE_LEDINTERF == 1
+#if SPD_USE_LEDMTRX == 1
+	uint32_t zeitzone = 3600;
+
+	myUhrESP Uhr(zeitzone);
+	GlobInterfaces.addInt(&Uhr);
+
+
+
+
+
 	const uint8_t BANDNO1 = 0;
 	const uint32_t ANZAHLLEDs1 = 256;
 	const uint8_t MAXBRIGHTNESS1 = 50;
 	const uint8_t LEDWS28PIN1 = 12;
-	const bool SpeichereWertefuerHelligkeitsaenderung = true;
+ 
 
-	LEDW2812Interface LEDs1(BANDNO1, ANZAHLLEDs1, LEDWS28PIN1, MAXBRIGHTNESS1, SpeichereWertefuerHelligkeitsaenderung);
-	GlobInterfaces.addInt(&LEDs1);
+	myLEDMatrix LEDMTX( LEDWS28PIN1, &Uhr);
+	GlobInterfaces.addInt(&LEDMTX);
 #endif
 	//###########################################################################################################################
 #if SPD_USE_BEEPER == 1
@@ -197,7 +210,10 @@ void setup()
 #endif  
 #endif
 	//###########################################################################################################################
-
+#if SPD_USE_DMXDIMMER == 1
+  myDMXDimmerESP myDMX;
+  GlobInterfaces.addInt(&myDMX);
+#endif 
 
 	HAUPTSCHLEIFE();
 
