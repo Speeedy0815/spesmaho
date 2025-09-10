@@ -8,6 +8,9 @@ mySpiffsSettingsloaderString::mySpiffsSettingsloaderString(const char* filepfad,
 	_stdname = stdname;
 	_filepfad = filepfad;
 
+
+	
+
 	loadaddr();
 }
 
@@ -18,6 +21,8 @@ void mySpiffsSettingsloaderString::loadaddr()
 		Serial.println("SMF"); //SPIFFS Mount Failed
 		return;
 	}
+ 
+
 	debug("Pfad: ");
 	debugln(_filepfad);
 	debugln("LoadSet");
@@ -31,15 +36,28 @@ void mySpiffsSettingsloaderString::loadaddr()
 		Serial.println("NoSetFount");
 
 	}
-	while (file.available())
-	{
-		gespeicherterName[len] = file.read();
-		//Serial.print(buffer[len]);
-		len++;
-	}
-	debug("Filelaenge");
+	while (file.available()) {
+    	char c = file.read();
 
+		debug("Read char: '");
+		if (c >= 32 && c <= 126) {
+			debug(c);  // druckbares Zeichen
+		} else {
+			debug("."); // Platzhalter für nicht druckbare Zeichen
+		}
+		debug("'  ASCII: ");
+		debugln((int)c);
+
+
+    	if (c == '\r' || c == '\n') continue; // Überspringe CR/LF
+    	gespeicherterName[len] = c;
+    	len++;
+	}
 	gespeicherterName[len] = 0;
+	debug("Filelaenge: ");
+	debugln(len);
+
+	 
 	file.close();
 	if (len > 0) { somethingsaved = true; }
 	else { somethingsaved = false; }
@@ -97,6 +115,9 @@ bool mySpiffsSettingsloaderString::callbackismineanddo(char* topic, byte* payloa
 
 		Serial.println("save:");
 		Serial.println((char*)payload + 2);
+
+		payload[length] = 0;
+
 		saveaddr((char*)payload + 2);
 		return true;
 	}
@@ -104,6 +125,10 @@ bool mySpiffsSettingsloaderString::callbackismineanddo(char* topic, byte* payloa
 	{
 		Serial.println("deleteSetting");
 		SPIFFS.remove(_filepfad);
+
+		
+		delay(1000);
+		globalResetme();
 		return true;
 	}
 	return false;

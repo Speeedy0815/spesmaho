@@ -5,15 +5,15 @@
 #define SPD_USE_TAS_MTX         0
 #define SPD_USE_HW_GPIO         0 
 #define SPD_USE_HW_MCP          0 
-#define SPD_USE_IR              0  
- 
-#define SPD_USE_LEDMTRX         1 		//getestet
-#define SPD_USE_DMXDIMMER		1       //getestet
+
+#define SPD_USE_IR              1  		//getestet
+#define SPD_USE_LEDMTRX         0 		//getestet
+#define SPD_USE_DMXDIMMER		0       //getestet
 
  
 #define SPD_USE_OTAUPDATER      0    
 #define SPD_USE_WTD             0   	//getestet
-#define SPD_USE_SPIFFSSETTINGS  0 
+#define SPD_USE_SPIFFSSETTINGS  1 
  
  
 #define SPD_USE_MQTTVARIANT     1  
@@ -68,7 +68,9 @@
 #if SPD_USE_DMXDIMMER == 1
   #include "myDMXDimmerESP.h" 
 #endif
-
+#if SPD_USE_SPIFFSSETTINGS == 1
+  #include "mySpiffsSettingsloader.h"
+#endif
 
 
 
@@ -84,27 +86,40 @@ void setup()
 
 
  
-	const char* MYMQTTNAME = "/tester";
+	char MYMQTTNAME[50];  
+	strcpy(MYMQTTNAME, "/tester");
+ 
+
+#if SPD_USE_SPIFFSSETTINGS == 1
+
+  const char* filepfad = "/MQTTName";
+  mySpiffsSettingsloaderString Adressloader(filepfad, MYMQTTNAME);
+  strcpy(MYMQTTNAME, Adressloader.getSett());
+	
+#endif
+
 
  
 #if SPD_USE_MQTTVARIANT == 0
   SerialDummy mqtt(MYMQTTNAME);
 #endif
 #if SPD_USE_MQTTVARIANT == 1
-  byte MYMACADDR[6] = { 0x74,0x62,0x35,0x23,0x10,0x75 };
+  byte MYMACADDR[6];
+  GLOGetETHMacFromWifiMac(MYMACADDR);
   const uint8_t RESPINETHERNET = 26;
   const uint8_t CSETHERNET = 0;
   MqttCommunication mqtt(MYSERVERADDR, MYMACADDR, MYMQTTNAME, MYMQTTUSER, MYMQTTPASSW, RESPINETHERNET,CSETHERNET);
-  GlobInterfaces.addInt(&mqtt);
 #endif
  #if SPD_USE_MQTTVARIANT == 2
   ESP_Wifi_MQTT mqtt(MYSERVERADDR, MYMQTTNAME, MYMQTTUSER, MYMQTTPASSW, WIFISSID, WIFIPW);
 #endif
+  GlobInterfaces.addInt(&mqtt);
 
 
-	GlobInterfaces.addInt(&mqtt);
 
- 
+#if SPD_USE_SPIFFSSETTINGS == 1  
+	GlobInterfaces.addInt(&Adressloader);
+#endif 
 	//###########################################################################################################################
 #if SPD_USE_HW_GPIO == 1
   myBasisHW_GPIO HARDW;  //HARDW()         //warum ohne Klammern???? CCC? Das verstehe ich nicht
@@ -152,7 +167,7 @@ void setup()
 #endif
 	//###########################################################################################################################
 #if SPD_USE_IR == 1
-	const uint8_t IRREC_PIN = 32;
+	const uint8_t IRREC_PIN = 16;
 	const bool IR_ENABLE_SEND = false; //PIN is fix
 
 	MyIr IRGeraet(&mqtt, IRREC_PIN, IR_ENABLE_SEND);
@@ -198,7 +213,7 @@ void setup()
 #endif
 	//###########################################################################################################################
 #if SPD_USE_OTAUPDATER == 1  
-  const char* Firmwarename = "DisplayStube.bin";
+  const char* Firmwarename = "???.bin";
 	OTAUpdater OTA(&mqtt,Firmwarename);
 #if SPD_USE_DISP_UND_HEIZ == 1 
 	OTA.setupdateW(&DISP);

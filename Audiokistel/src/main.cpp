@@ -121,8 +121,7 @@ void setup()
 const char* stdnamewennnichhstgesetztist = "/audiokaestel";
 #if SPD_USE_SPIFFSSETTINGS == 1  
   const char* filepfad = "/MQTTName";
-  
-	mySpiffsSettingsloaderString Adressloader(filepfad, stdnamewennnichhstgesetztist);
+  mySpiffsSettingsloaderString Adressloader(filepfad, stdnamewennnichhstgesetztist);
 #endif
 
 //###########################################################################################################################
