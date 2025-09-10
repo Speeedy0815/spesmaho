@@ -7,8 +7,8 @@
 #define SPD_USE_HW_MCP          0 
 #define SPD_USE_IR              0  
  
-#define SPD_USE_LEDMTRX         0 		//getestet
-#define SPD_USE_DMXDIMMER		1
+#define SPD_USE_LEDMTRX         1 		//getestet
+#define SPD_USE_DMXDIMMER		1       //getestet
 
  
 #define SPD_USE_OTAUPDATER      0    
