@@ -44,6 +44,8 @@ protected:
 public:
 	~DigitalBeleuchtungDisplay() {};
 	DigitalBeleuchtungDisplay(myBasisHW* Hardware, uint8_t ledpin);
+	 
+	
 	void update() {}; // brauche ich hier nicht
 	void schalteAn();
 	void schalteAus();
@@ -59,7 +61,7 @@ private:
 	int16_t dutyCycleHintergrundbeleuchtung = 0;
 
 	uint8_t _ledpin = MYPINUNUSED;
-
+	uint8_t _PWMchannel = MYPINUNUSED;
 	const int freqhintergrundbel = 5000;
 	const int resolutionhintergrundbel = 8;
 
@@ -69,7 +71,7 @@ protected:
 
 public:
 	~PWMBeleuchtungDisplay() {};
-	 PWMBeleuchtungDisplay(uint8_t ledpin);
+	PWMBeleuchtungDisplay(uint8_t ledpin,uint8_t PWMchannel);
 	void update();
 	void schalteAn();
 	void schalteAus();

@@ -29,11 +29,11 @@ void Interfacesammler::runonce()
    
         for (uint8_t b = 0; b < count; b++)
         {
-            #if MYDEBUG >= 2
+            #if MYDEBUG >= 3
                 debug("i: "); debug(b); debug(" : ");
                 uint32_t vorher = millis();
             #endif
-			#if MYDEBUG >= 1
+			#if MYDEBUG >= 2
 			//Wifi sorgt für ständige änderung auf dem heap....deswegen musste ich es doch wegschaltern
             int *heapVariable = new int;
             int stackVariable;

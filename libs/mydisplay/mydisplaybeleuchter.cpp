@@ -33,7 +33,7 @@ bool	DigitalBeleuchtungDisplay::istDisplayAn()
 	return _state;
 }
 //##############################################################################################
- PWMBeleuchtungDisplay::PWMBeleuchtungDisplay(uint8_t ledpin)
+ PWMBeleuchtungDisplay::PWMBeleuchtungDisplay(uint8_t ledpin,uint8_t PWMchannel)
 {
 
 	debugln("init Beleuchtung");
@@ -41,9 +41,16 @@ bool	DigitalBeleuchtungDisplay::istDisplayAn()
 	
  
 	
-	
+	_PWMchannel = PWMchannel;
 	_ledpin = ledpin;
-	ledcAttach(_ledpin,freqhintergrundbel,resolutionhintergrundbel);  //Todo testen 
+
+
+	ledcSetup(PWMchannel, freqhintergrundbel, resolutionhintergrundbel);
+    ledcAttachPin(_ledpin, PWMchannel);
+ 
+
+
+
 	Hintergrundbeleuchtungstimer.start(Hintergrundbeleuchtungstimerzeit, true);
 #if MYDEBUG >= 1	
 	schalteAn();
@@ -83,7 +90,7 @@ void PWMBeleuchtungDisplay::setHintergrund(int8_t val)
 	dutyCycleHintergrundbeleuchtung += val;
 	if (dutyCycleHintergrundbeleuchtung > 255) { dutyCycleHintergrundbeleuchtung = 255; }
 	if (dutyCycleHintergrundbeleuchtung < 0) { dutyCycleHintergrundbeleuchtung = 0; }
-	ledcWrite(_ledpin, dutyCycleHintergrundbeleuchtung);
+	ledcWrite(_PWMchannel, dutyCycleHintergrundbeleuchtung);
 
 
 }

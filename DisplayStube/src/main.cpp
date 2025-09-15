@@ -1,22 +1,22 @@
 
 
 
-#define SPD_USE_INPUTS          1
-#define SPD_USE_TAS_MTX         1
-#define SPD_USE_HW_GPIO         1 
-#define SPD_USE_HW_MCP          1 
-#define SPD_USE_IR              1  //getestet
+#define SPD_USE_INPUTS          0
+#define SPD_USE_TAS_MTX         0
+#define SPD_USE_HW_GPIO         0 
+#define SPD_USE_HW_MCP          0 
+#define SPD_USE_IR              0  //getestet
 #define SPD_USE_BEEPER          1  //getestet
-#define SPD_USE_ENCODER         1  //getestet 
-#define SPD_USE_LEDINTERF       1 
-#define SPD_USE_DISP_UND_HEIZ   1   
-#define SPD_USE_HELL_SENS       1  //getestet
-#define SPD_USE_OTAUPDATER      1  //getestet  
+#define SPD_USE_ENCODER         0  //getestet 
+#define SPD_USE_LEDINTERF       0 
+#define SPD_USE_DISP_UND_HEIZ   0   
+#define SPD_USE_HELL_SENS       0  //getestet
+#define SPD_USE_OTAUPDATER      0  //getestet  
 #define SPD_USE_WTD             0  //getestet 
 #define SPD_USE_SPIFFSSETTINGS  1 
  
  
-#define SPD_USE_MQTTVARIANT     3  
+#define SPD_USE_MQTTVARIANT    2  
             //0: Serial 
             //1: W5500Ethernet      //gibts hier nicht!!!
             //2: Wifi               //getestet
@@ -209,7 +209,8 @@ void setup()
 #endif
 	//###########################################################################################################################
 #if SPD_USE_BEEPER == 1
-	MyBeep BEEP(&mqtt);
+	const uint8_t BeeperPWMChannel = 1;// nicht doppelt verwenden!!!! Todo --> Funkion  schreiben!
+	MyBeep BEEP(&mqtt,BeeperPWMChannel);
 	GlobInterfaces.addInt(&BEEP);
 #endif
 	//###########################################################################################################################
@@ -233,10 +234,11 @@ void setup()
 
 	const uint8_t cs_display = 15;  //ist in usersetup gewandert
 	const uint8_t resPin = 4;       //ist in usersetup gewandert
+	const uint8_t PWMChannel = 0; //nicht doppelt verwenden!!!      
 
 
 	const uint8_t ledPinhintergrundbel = 5;
-	PWMBeleuchtungDisplay BEL(ledPinhintergrundbel);
+	PWMBeleuchtungDisplay BEL(ledPinhintergrundbel,PWMChannel);
 
 	MyDisp DISP(&mqtt, &BEL, &ENC, &Uhr);
 	GlobInterfaces.addInt(&DISP);

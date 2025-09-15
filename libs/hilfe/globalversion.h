@@ -2,11 +2,12 @@
 #ifndef VERSIONHEADER
 #define VERSIONHEADER
 
-const double GLOBALVERSION = 1.66;
+const double GLOBALVERSION = 1.67;
 
 
 /*
 XXXX BEGIN
+1.67    Filter in Helligkeitssensor eingebaut (wegen LED Beleuchtung)
 1.66    Uhr hinzugefügt als Matrixdisplay
 1.64    Beeper auf aktuelles Framework aktualisiert. Neues Interface,... kann jetzt Töne spielen
 1.63	IR aktualisiert

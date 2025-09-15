@@ -1,6 +1,6 @@
 #pragma once
 
-#define MYDEBUG 1
+#define MYDEBUG 0
 #include "mydebug.h"
 
 #if defined(ARDUINO) && ARDUINO >= 100
@@ -20,20 +20,21 @@ class MyBeep : public BasisInterface
 private:  
 
 	myTimer TIMER;
-	uint16_t TIMERZeit = 5; //ms  --> achtung nicht ändern, der Timer wird doppelt verwendet!!!!!
+	uint16_t TIMERZeit = 5; //ms  --> achtung nicht ï¿½ndern, der Timer wird doppelt verwendet!!!!!
 
 
 	int freq = 500;
 	 
 	const int resolution = 8;
 	const int ledPin = 0;  
+	uint8_t _pwmchannel = MYPINUNUSED;
 	 
 	Basiskommunikation * _mqtt;
 	 
 
 	uint16_t dauer = 0;
 public: 
-	MyBeep(Basiskommunikation* mqtt); 
+	MyBeep(Basiskommunikation* mqtt,uint8_t pwmchannel); 
 	void update(); 
     
 	bool callbackismineanddo(char* topic, byte* payload, unsigned int length);

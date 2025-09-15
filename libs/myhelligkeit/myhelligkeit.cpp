@@ -1,4 +1,28 @@
 #include "myhelligkeit.h"
+
+
+const int FILTER_SIZE = 10;
+uint32_t filterBuffer[FILTER_SIZE];
+int filterIndex = 0;
+bool bufferFilled = false;
+
+uint32_t filterAnalog(uint32_t newVal) {
+    filterBuffer[filterIndex++] = newVal;
+    if (filterIndex >= FILTER_SIZE) {
+        filterIndex = 0;
+        bufferFilled = true;
+    }
+
+    uint64_t sum = 0;
+    int count = bufferFilled ? FILTER_SIZE : filterIndex;
+    for (int i = 0; i < count; i++) {
+        sum += filterBuffer[i];
+    }
+    return sum / count;
+}
+
+
+
 MyHell::MyHell(Basiskommunikation* mqtt)
 {
 
@@ -16,7 +40,7 @@ void MyHell::send(uint32_t val)
 }
 void MyHell::update()
 {
-	uint32_t act_val = analogRead(potPin);
+	uint32_t act_val = filterAnalog(analogRead(potPin));
 	if (TIM.update_darfich())
 	{
 		send(act_val);

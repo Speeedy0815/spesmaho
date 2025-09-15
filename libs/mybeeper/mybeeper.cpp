@@ -2,15 +2,20 @@
 
 
 
-MyBeep::MyBeep(Basiskommunikation* mqtt)
+MyBeep::MyBeep(Basiskommunikation* mqtt,uint8_t pwmchannel)
 {
 
 	_mqtt = mqtt;
 
 
-	ledcAttach(ledPin,freq,resolution);
-	ledcWrite(ledPin, 0);
-	//TIMER.start(TIMERZeit, false);
+	_pwmchannel = pwmchannel;
+	ledcSetup(pwmchannel, freq, resolution);
+    ledcAttachPin(ledPin, pwmchannel);
+
+
+ 
+	ledcWrite(_pwmchannel, 0);
+
 }
 
 
@@ -20,7 +25,7 @@ void MyBeep::update()
 	if (TIMER.update_darfich())
 	{
 		debugln("aus");
-		ledcWrite(ledPin, 0);  //ausschalten
+		ledcWrite(_pwmchannel, 0);  //ausschalten
 		TIMER.stop(); 
 	}
 
@@ -31,14 +36,14 @@ void MyBeep::update()
 }
 bool  MyBeep::callbackismineanddo(char* topic, byte* payload, unsigned int length)
 {
-	if (length < 4)
+	if (length < 3)
 		return false;
 	if (length > 10)
 		return false;
 	if (payload[0] != 'P')
 		return false;
-	//P für Piel
-	//0-9 Tonhöhe
+	//P fï¿½r Piel
+	//0-9 Tonhï¿½he
 	//0-9 Dauer
 
 	
@@ -90,7 +95,7 @@ bool  MyBeep::callbackismineanddo(char* topic, byte* payload, unsigned int lengt
 	debug("note: ");
 	debugln(meineNote);
 
-	ledcWriteNote(ledPin,meineNote,oktave);
+	ledcWriteNote(_pwmchannel,meineNote,oktave);
 	TIMER.start(dauer, false);  //Timerreset, dass das piepsen nicht sofort wieder ausgeschaltet wird
 
 	return true;
