@@ -126,10 +126,11 @@ void HAUPTSCHLEIFE()
 
 void globaleinitialisierung()
 {
-	//while (!Serial); --> Das hällt der ESP nicht aus, warum auch immer
-	Serial.begin(115200);
-	Serial.println();  //Die Schleife ist für den ESP Notwendig, warum auch immer startet er die Serielle schnittstelle nicht schnell genug
-	for (uint8_t j = 0; j < 10; j++) { Serial.print(F("....")); }  Serial.println(F("."));
+	 
+    Serial.begin(115200);
+    delay(200);  // kleine Pause, reicht völlig
+    Serial.println("Start");
+	
 	debugln("Start");
 
 	 

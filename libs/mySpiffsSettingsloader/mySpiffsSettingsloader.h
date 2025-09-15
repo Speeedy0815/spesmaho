@@ -13,18 +13,13 @@
 
 
 #include "basisinterface.h" 
+#include "arduinowatchdog.h"
 #include "FS.h"
  
 #if defined(ESP32)
 #include "SPIFFS.h"
 #endif
-
-
-#include "arduinowatchdog.h"
-
-
-
-
+ 
 
 class mySpiffsSettingsloaderString : public BasisInterface
 {

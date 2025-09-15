@@ -329,5 +329,10 @@ bool myLEDMatrix::callbackismineanddo(char* topic, byte* payload, unsigned int l
     debug("Text gesetzt: ");
     debugln(textBuffer);
 	tickCounter = 1;
+	
+	if _mode == 'U'
+	{
+		drawUhrzeit(); //eimalig, damit ist der Timer egal
+	}
     return true;
 }

@@ -7,13 +7,13 @@
 #define SPD_USE_HW_MCP          0 
 
 #define SPD_USE_IR              1  		//getestet
-#define SPD_USE_LEDMTRX         0 		//getestet
-#define SPD_USE_DMXDIMMER		0       //getestet
+#define SPD_USE_LEDMTRX         1 		//getestet
+#define SPD_USE_DMXDIMMER		1       //getestet
 
  
 #define SPD_USE_OTAUPDATER      0    
-#define SPD_USE_WTD             0   	//getestet
-#define SPD_USE_SPIFFSSETTINGS  1 
+#define SPD_USE_WTD             1   	//getestet
+#define SPD_USE_SPIFFSSETTINGS  1 		//getestet
  
  
 #define SPD_USE_MQTTVARIANT     1  
@@ -107,7 +107,7 @@ void setup()
   byte MYMACADDR[6];
   GLOGetETHMacFromWifiMac(MYMACADDR);
   const uint8_t RESPINETHERNET = 26;
-  const uint8_t CSETHERNET = 0;
+  const uint8_t CSETHERNET = 14;
   MqttCommunication mqtt(MYSERVERADDR, MYMACADDR, MYMQTTNAME, MYMQTTUSER, MYMQTTPASSW, RESPINETHERNET,CSETHERNET);
 #endif
  #if SPD_USE_MQTTVARIANT == 2
@@ -207,7 +207,8 @@ void setup()
 	//##########################################################################################################################
 #if SPD_USE_WTD == 1
 	bool onlyuseresetter = false;
-  uint32_t Resetzeit = 300000; 
+    uint32_t Resetzeit = 300000; 
+  
 	WTD GLOBWathdog(&mqtt, onlyuseresetter,Resetzeit);
 	GlobInterfaces.addInt(&GLOBWathdog);
 #endif
