@@ -1,11 +1,4 @@
 {
-    "name": "myCAN",
-    "version": "1.0.0",
-    "dependencies": [
-       
-        {
-            "name": "Adafruit CAN"
-           
-        }
-    ]
+    "name": "myCan",
+    "version": "1.0.0"
 }

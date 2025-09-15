@@ -1,0 +1,11 @@
+{
+    "name": "myCAN",
+    "version": "1.0.0",
+    "dependencies": [
+       
+        {
+            "name": "Adafruit CAN"
+           
+        }
+    ]
+}
