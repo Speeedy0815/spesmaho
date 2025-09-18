@@ -1,6 +1,6 @@
 
 
-
+#define SPD_USE_CANUMSETZER     1
 #define SPD_USE_INPUTS          0
 #define SPD_USE_TAS_MTX         0
 #define SPD_USE_HW_GPIO         0 
@@ -9,6 +9,7 @@
 #define SPD_USE_IR              1  		//getestet
 #define SPD_USE_LEDMTRX         1 		//getestet
 #define SPD_USE_DMXDIMMER		1       //getestet
+#define SPD_USE_LEDINTERF       1 
 
  
 #define SPD_USE_OTAUPDATER      0    
@@ -72,7 +73,14 @@
   #include "mySpiffsSettingsloader.h"
 #endif
 
-
+#if SPD_USE_CANUMSETZER == 1
+	#include "canumsetzer.h"
+	#include "canbasis.h"
+	#include "canhardESP.h"
+#endif
+#if SPD_USE_LEDINTERF == 1
+  #include "ws2812streifen.h"
+#endif
 
 
 Interfacesammler GlobInterfaces(20);
@@ -114,6 +122,30 @@ void setup()
   ESP_Wifi_MQTT mqtt(MYSERVERADDR, MYMQTTNAME, MYMQTTUSER, MYMQTTPASSW, WIFISSID, WIFIPW);
 #endif
   GlobInterfaces.addInt(&mqtt);
+
+
+
+
+//###########################################################################################################################
+ 
+
+
+
+#if SPD_USE_CANUMSETZER == 1  
+
+  	const uint32_t geschwindigkeit = 125000; // scheint nicht zu wirken
+  	const uint8_t CANCS_RXpin = 17;
+  	const uint8_t CANIRQ_TXpin = 5;
+ 
+  	//achtung, Canbusgeschwindikeit wirkt derzeit nicht!!!!
+	canhardESP canHW(CANCS_RXpin, CANIRQ_TXpin, geschwindigkeit);
+  
+	CanUmsetzer UMS(&mqtt, &canHW);
+	GlobInterfaces.addInt(&UMS);
+#endif
+//###########################################################################################################################
+
+
 
 
 
@@ -185,13 +217,6 @@ void setup()
 	myUhrESP Uhr(zeitzone);
 	GlobInterfaces.addInt(&Uhr);
 
-
-
-
-
-	const uint8_t BANDNO1 = 0;
-	const uint32_t ANZAHLLEDs1 = 256;
-	const uint8_t MAXBRIGHTNESS1 = 50;
 	const uint8_t LEDWS28PIN1 = 12;
  
 
@@ -230,6 +255,21 @@ void setup()
   myDMXDimmerESP myDMX;
   GlobInterfaces.addInt(&myDMX);
 #endif 
+
+	//###########################################################################################################################
+#if SPD_USE_LEDINTERF == 1
+	const uint8_t BANDNO1 = 0;
+	const uint8_t ANZAHLLEDs1 = 50;
+	const uint8_t MAXBRIGHTNESS1 = 50;
+	const uint8_t LEDWS28PINBand = 33;
+	const bool SpeichereWertefuerHelligkeitsaenderung = true;
+
+	Ws2812streifen LEDs1(BANDNO1, ANZAHLLEDs1, LEDWS28PINBand, MAXBRIGHTNESS1, SpeichereWertefuerHelligkeitsaenderung);
+	GlobInterfaces.addInt(&LEDs1);
+#endif
+	//###########################################################################################################################
+
+
 
 	HAUPTSCHLEIFE();
 

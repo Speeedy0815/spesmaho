@@ -11,6 +11,8 @@
 #include "mytimer.h"
 
 
+#warning ALTES Modul,... will ich nicht mehr verwenden, bitte nur noch ws2812streifen nutzen
+
 #if defined(ARDUINO_ARCH_ESP32)
 #else
 class mypwmled : public myRGBWbasis

@@ -1,22 +1,22 @@
 
 
 
-#define SPD_USE_INPUTS          0
-#define SPD_USE_TAS_MTX         0
-#define SPD_USE_HW_GPIO         0 
-#define SPD_USE_HW_MCP          0 
-#define SPD_USE_IR              0  //getestet
+#define SPD_USE_INPUTS          1
+#define SPD_USE_TAS_MTX         1
+#define SPD_USE_HW_GPIO         1 
+#define SPD_USE_HW_MCP          1 
+#define SPD_USE_IR              1  //getestet
 #define SPD_USE_BEEPER          1  //getestet
-#define SPD_USE_ENCODER         0  //getestet 
-#define SPD_USE_LEDINTERF       0 
-#define SPD_USE_DISP_UND_HEIZ   0   
-#define SPD_USE_HELL_SENS       0  //getestet
-#define SPD_USE_OTAUPDATER      0  //getestet  
-#define SPD_USE_WTD             0  //getestet 
+#define SPD_USE_ENCODER         1  //getestet 
+#define SPD_USE_LEDINTERF       1 
+#define SPD_USE_DISP_UND_HEIZ   1   
+#define SPD_USE_HELL_SENS       1  //getestet
+#define SPD_USE_OTAUPDATER      1  //getestet  
+#define SPD_USE_WTD             1  //getestet 
 #define SPD_USE_SPIFFSSETTINGS  1 
  
  
-#define SPD_USE_MQTTVARIANT    2  
+#define SPD_USE_MQTTVARIANT    3  
             //0: Serial 
             //1: W5500Ethernet      //gibts hier nicht!!!
             //2: Wifi               //getestet

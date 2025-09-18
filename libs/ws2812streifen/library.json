@@ -1,0 +1,10 @@
+{
+    "name": "ws2812streifen",
+    "version": "1.0.0",
+    "dependencies": [
+        {
+            "name": "Adafruit NeoPixel",
+            "version": "1.12.0"            
+        }
+    ]
+}

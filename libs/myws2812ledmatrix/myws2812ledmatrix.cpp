@@ -330,7 +330,7 @@ bool myLEDMatrix::callbackismineanddo(char* topic, byte* payload, unsigned int l
     debugln(textBuffer);
 	tickCounter = 1;
 	
-	if _mode == 'U'
+	if (_mode == 'U')
 	{
 		drawUhrzeit(); //eimalig, damit ist der Timer egal
 	}
