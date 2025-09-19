@@ -1,20 +1,21 @@
+//Todo Watchdog sinnvoll, ohne Ethernetverbindung tut der nichts!
+
+#define SPD_USE_CANUMSETZER     0
 
 
-#define SPD_USE_CANUMSETZER     1
-#define SPD_USE_INPUTS          0
-#define SPD_USE_TAS_MTX         0
-#define SPD_USE_HW_GPIO         0 
-#define SPD_USE_HW_MCP          0 
+#define SPD_USE_HW_MCP          1 
+#define SPD_USE_INPUTS          1
+#define SPD_USE_OUTPUTS         1
 
-#define SPD_USE_IR              1  		//getestet
-#define SPD_USE_LEDMTRX         1 		//getestet
-#define SPD_USE_DMXDIMMER		1       //getestet
-#define SPD_USE_LEDINTERF       1 
+#define SPD_USE_IR              0  		//getestet
+#define SPD_USE_LEDMTRX         0 		//getestet
+#define SPD_USE_DMXDIMMER		    0     //getestet
+#define SPD_USE_LEDINTERF       0 
 
  
-#define SPD_USE_OTAUPDATER      0    
-#define SPD_USE_WTD             1   	//getestet
-#define SPD_USE_SPIFFSSETTINGS  1 		//getestet
+#define SPD_USE_OTAUPDATER      1    
+#define SPD_USE_WTD             0   	//getestet
+#define SPD_USE_SPIFFSSETTINGS  0 		//getestet
  
  
 #define SPD_USE_MQTTVARIANT     1  
@@ -44,12 +45,17 @@
 #if SPD_USE_INPUTS == 1
   #include "myInputs.h"
 #endif
+
+#if SPD_USE_OUTPUTS == 1
+  #include "myOutputs.h"
+#endif
+
+
 #if SPD_USE_HW_MCP == 1
   #include "myBasisHW_MCP.h" //Hardware
 #endif
-#if SPD_USE_HW_GPIO == 1
-  #include "myBasisHW_GPIO.h" //Hardware
-#endif
+ 
+
 #if SPD_USE_MQTTVARIANT == 0
   #include "serialdummymqtt.h" 
 #endif
@@ -64,7 +70,7 @@
   #include "arduinowatchdog.h"
 #endif
 #if SPD_USE_OTAUPDATER == 1
-  #include "myotaupdater.h"
+  #include "myotaupdater.h"//über Wifi Für Ethernet habe ich nichts sinnvolles gefunden Chat GPT halluziniert
 #endif
 #if SPD_USE_DMXDIMMER == 1
   #include "myDMXDimmerESP.h" 
@@ -83,35 +89,32 @@
 #endif
 
 
-Interfacesammler GlobInterfaces(20);
+Interfacesammler GlobInterfaces(25);
 
 void setup()
 {
 
 	globaleinitialisierung();
 
-
-
-
+#if SPD_USE_HW_MCP == 1
+const uint8_t resetmcppin = 4;//Achtung Hardwarefehler in der ersten Variante
+	myBasisHW_MCP_Resetit(resetmcppin);
+#endif
  
 	char MYMQTTNAME[50];  
 	strcpy(MYMQTTNAME, "/tester");
  
-
 #if SPD_USE_SPIFFSSETTINGS == 1
-
   const char* filepfad = "/MQTTName";
   mySpiffsSettingsloaderString Adressloader(filepfad, MYMQTTNAME);
   strcpy(MYMQTTNAME, Adressloader.getSett());
-	
 #endif
-
-
- 
 #if SPD_USE_MQTTVARIANT == 0
+  Serial.println("Starte Serial Interface");
   SerialDummy mqtt(MYMQTTNAME);
 #endif
 #if SPD_USE_MQTTVARIANT == 1
+  Serial.println("Starte Ethernet Interface");
   byte MYMACADDR[6];
   GLOGetETHMacFromWifiMac(MYMACADDR);
   const uint8_t RESPINETHERNET = 26;
@@ -119,6 +122,7 @@ void setup()
   MqttCommunication mqtt(MYSERVERADDR, MYMACADDR, MYMQTTNAME, MYMQTTUSER, MYMQTTPASSW, RESPINETHERNET,CSETHERNET);
 #endif
  #if SPD_USE_MQTTVARIANT == 2
+  Serial.println("Starte Wifi Interface");
   ESP_Wifi_MQTT mqtt(MYSERVERADDR, MYMQTTNAME, MYMQTTUSER, MYMQTTPASSW, WIFISSID, WIFIPW);
 #endif
   GlobInterfaces.addInt(&mqtt);
@@ -152,51 +156,112 @@ void setup()
 #if SPD_USE_SPIFFSSETTINGS == 1  
 	GlobInterfaces.addInt(&Adressloader);
 #endif 
-	//###########################################################################################################################
-#if SPD_USE_HW_GPIO == 1
-  myBasisHW_GPIO HARDW;  //HARDW()         //warum ohne Klammern???? CCC? Das verstehe ich nicht
-  GlobInterfaces.addInt(&HARDW);
-#endif
+
 	//###########################################################################################################################
 #if SPD_USE_HW_MCP == 1  
-  const uint8_t ADDRMCP1 = 0;
-  myBasisHW_MCP MCP1(ADDRMCP1);
-  GlobInterfaces.addInt(&MCP1);
-#endif
-	////###########################################################################################################################
-#if SPD_USE_TAS_MTX == 1
-	const uint8_t MTXzeil = 3;
-	const uint8_t MTXspal = 3;
-	uint8_t       MTXZeilP[] = { 2,3,4 };
-	uint8_t       MTXSpalP[] = { 5,6,7 };
-	uint8_t MTXkeys[MTXzeil * MTXspal] = { 6,3,0,7,4,1,8,5,2 };
+myBasisHW_MCP MCPs[8] = { myBasisHW_MCP(0), myBasisHW_MCP(1), myBasisHW_MCP(2), myBasisHW_MCP(3) , myBasisHW_MCP(4), myBasisHW_MCP(5) ,myBasisHW_MCP(6) ,myBasisHW_MCP(7) };
 
-	myTastermatrix MTX(&mqtt, &MCP1, MTXspal, MTXzeil, MTXSpalP, MTXZeilP, MTXkeys);
-	GlobInterfaces.addInt(&MTX);
+for (uint8_t i = 0; i < 8; i++) {
+    if (MCPs[i].istesauchda()) {
+        GlobInterfaces.addInt(&MCPs[i]);
+    }
+}
 #endif
 	//###########################################################################################################################
+
 #if SPD_USE_INPUTS == 1
-	uint8_t       MCUSETTINGS1eingangssadressenlen = 2;
-	uint8_t       MCUSETTINGS1eingangsadressenpin[] = { 8,11 };  // bewmelder, taste auf incgeber
-	uint8_t       MCUSETTINGS1eingangsadressenlog[] = { 10,9 };
-	bool       MCUSETTINGS1eingangactivatelong[] = { false,true };
-
-	bool       MCUSETTINGS1turnlogic[] = { false,true };
-
-	myInputs IN(&mqtt, &MCP1, MCUSETTINGS1eingangssadressenlen, MCUSETTINGS1eingangsadressenpin, MCUSETTINGS1eingangsadressenlog, MCUSETTINGS1eingangactivatelong, MCUSETTINGS1turnlogic);
-	GlobInterfaces.addInt(&IN);
+#if !defined(SPD_USE_HW_MCP) || (SPD_USE_HW_MCP != 1)
+  #error "MCP muss an sein, sonst geht das nicht! (Oder Eingänge ausschalten)"
 #endif
-	//###########################################################################################################################
-#if SPD_USE_ENCODER == 1
-	const uint8_t ENCODERNUMMER = 0;
-	uint8_t ENCODERPINA = 27;
-	uint8_t ENCODERPINB = 26;
 
+// ------------------- Konstanten -------------------
+uint8_t MCUSETTINGS1eingangssadressenlen = 16;
+uint8_t MCUSETTINGS1eingangsadressenpin[16] = 
+  { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+bool MCUSETTINGS1eingangactivatelong[16] = 
+  { false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false };
+bool MCUSETTINGS1turnlogic[16] =
+  { true, true, true, true, true, true, true, true,
+    true, true, true, true, true, true, true, true };
 
-	myEncoderESP ENC(&mqtt, ENCODERPINA, ENCODERPINB, ENCODERNUMMER);
+// ------------------- Logik-Adressen -------------------
+uint8_t logs0[16], logs1[16], logs2[16], logs3[16];
+for (int i = 0; i < 16; i++) {
+  logs0[i] = i;
+  logs1[i] = i + 16;
+  logs2[i] = i + 32;
+  logs3[i] = i + 48;
+}
+uint8_t* logs[4] = { logs0, logs1, logs2, logs3 };
 
-	GlobInterfaces.addInt(&ENC);
+// ------------------- Eingangs-Objekte (dynamisch) -------------------
+myInputs* INs[4] = { nullptr, nullptr, nullptr, nullptr };
+
+for (uint8_t i = 0; i < 4; i++) {
+  if (MCPs[i].istesauchda()) {
+    Serial.print("Eingänge Block eingehangen, Nr: ");
+    Serial.println(i);
+
+    INs[i] = new myInputs(&mqtt, &MCPs[i],
+                          MCUSETTINGS1eingangssadressenlen,
+                          MCUSETTINGS1eingangsadressenpin,
+                          logs[i],
+                          MCUSETTINGS1eingangactivatelong,
+                          MCUSETTINGS1turnlogic);
+
+    GlobInterfaces.addInt(INs[i]);
+  }
+}
+
 #endif
+
+  //###########################################################################################################################
+#if SPD_USE_OUTPUTS == 1
+#if !defined(SPD_USE_HW_MCP) || (SPD_USE_HW_MCP != 1)
+  #error "MCP muss an sein, sonst geht das nicht! (Oder Ausgänge ausschalten)"
+#endif
+const uint8_t LAENGEAUSGAENGE = 16;
+uint8_t ADRESSENHWAUSGAENGE[LAENGEAUSGAENGE] = 
+  { 0, 1, 2, 3, 4, 5, 6, 7, 15, 14, 13, 12, 11, 10, 9, 8 };
+bool AUSGAENGEDREHEN[LAENGEAUSGAENGE] =
+  { true, true, true, true, true, true, true, true,
+    true, true, true, true, true, true, true, true };
+
+// Logikadressen für 4 MCP-Blöcke
+uint8_t logsO0[16], logsO1[16], logsO2[16], logsO3[16];
+for (int i = 0; i < 16; i++) {
+  logsO0[i] = i;
+  logsO1[i] = i + 16;
+  logsO2[i] = i + 32;
+  logsO3[i] = i + 48;
+}
+uint8_t* logsOut[4] = { logsO0, logsO1, logsO2, logsO3 };
+
+// ------------------- Ausgangs-Objekte (dynamisch) -------------------
+myOutputs* OUTs[4] = { nullptr, nullptr, nullptr, nullptr };
+
+for (uint8_t i = 0; i < 4; i++) {
+  if (MCPs[i].istesauchda()) {
+    Serial.print("Ausgänge Block eingehangen, Nr: ");
+    Serial.println(i);
+
+    OUTs[i] = new myOutputs(&mqtt, &MCPs[i],
+                            LAENGEAUSGAENGE,
+                            ADRESSENHWAUSGAENGE,
+                            logsOut[i],
+                            AUSGAENGEDREHEN);
+
+    GlobInterfaces.addInt(OUTs[i]);
+  }
+}
+
+#endif
+
+
+
+
+
 	//###########################################################################################################################
 #if SPD_USE_IR == 1
 	const uint8_t IRREC_PIN = 16;
@@ -204,11 +269,6 @@ void setup()
 
 	MyIr IRGeraet(&mqtt, IRREC_PIN, IR_ENABLE_SEND);
 	GlobInterfaces.addInt(&IRGeraet);
-#endif
-	//###########################################################################################################################
-#if SPD_USE_HELL_SENS == 1
-	MyHell HELL(&mqtt);
-	GlobInterfaces.addInt(&HELL);
 #endif
 	//###########################################################################################################################
 #if SPD_USE_LEDMTRX == 1
@@ -239,16 +299,9 @@ void setup()
 #endif
 	//###########################################################################################################################
 #if SPD_USE_OTAUPDATER == 1  
-  const char* Firmwarename = "???.bin";
-	OTAUpdater OTA(&mqtt,Firmwarename);
-#if SPD_USE_DISP_UND_HEIZ == 1 
-	OTA.setupdateW(&DISP);
-#endif  
+  const char* Firmwarename = "GruenePlatine.bin";
+  OTAUpdater OTA(&mqtt,Firmwarename);
 	GlobInterfaces.addInt(&OTA);
-
-#if SPD_USE_DISP_UND_HEIZ == 1 
-	DISP.setOTAUpdater(&OTA);
-#endif  
 #endif
 	//###########################################################################################################################
 #if SPD_USE_DMXDIMMER == 1

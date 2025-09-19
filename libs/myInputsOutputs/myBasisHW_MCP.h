@@ -20,6 +20,7 @@ class myBasisHW_MCP : public myBasisHW
 private:
 	Adafruit_MCP23X17 mymcp;
 	uint16_t abbild;
+	uint8_t _i2c_addr;
 
 protected:
 
@@ -35,6 +36,7 @@ public:
 	void set_as_Input_Pullup(uint8_t nr);
 
 	void activatePinForInterrupt(uint8_t nr, uint8_t mode);
+	bool istesauchda();
  
 };
 

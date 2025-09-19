@@ -26,13 +26,10 @@ public:
 	MqttCommunication(const char* server, uint8_t* mac, const char* MYMQTTNAME, const char* MYMQTTUS, const char* MYMQTTPW, uint8_t Resetpin);
 
 	~MqttCommunication() {};
-
 private:
 
 	void init(uint8_t* mac, uint8_t Resetpin, uint8_t cspin);
 	EthernetClient ethClient;
 
 protected:
-
-
 };

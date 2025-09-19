@@ -18,13 +18,22 @@ void myBasisHW_MCP_Resetit(uint8_t pin)
 
 myBasisHW_MCP::myBasisHW_MCP(uint8_t mcpaddr)
 {
-
-	if(!mymcp.begin_I2C(mcpaddr + MCP23XXX_ADDR))//ggf mal noch ne 20 draufrechnen
+    _i2c_addr = mcpaddr + MCP23XXX_ADDR;
+    if (!mymcp.begin_I2C(_i2c_addr)) {
+        Serial.print("MCP23X17 Fehler bei der Initialisierung Adresse: ");
+		
+    }else
 	{
-		Serial.println("MCP23X17 Fehler bei der Initialisierung!");
-		while(1);
+		update();
+		Serial.print("MCP23X17 initialisiert mit Adresse:");
 	}
-	update();
+	Serial.println(_i2c_addr);
+}
+
+bool myBasisHW_MCP::istesauchda()
+{
+	Wire.beginTransmission(_i2c_addr);
+    return (Wire.endTransmission() == 0);
 }
 
 

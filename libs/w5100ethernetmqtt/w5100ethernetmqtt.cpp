@@ -58,4 +58,3 @@ void MqttCommunication::init(uint8_t* mac, uint8_t Resetpin, uint8_t cspin)
 
 
 
-

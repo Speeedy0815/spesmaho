@@ -4,8 +4,6 @@
 
 void OTAUpdater::benachrichtigealles(char* inhalt)
 {
-	//if (this->_display) { this->_display->setupdatestring(inhalt); }  //wenn Display angeschlossen ist  --> umschalten
-	//if (this->_display) { this->_display->aktualisiereupdateinhalt(); }//wenn Display angeschlossen ist  --> umschalten + einmalig Bild aufbauen
 	_newcontent = true;
 	strcpy(updatestring, inhalt);
 	_mqtt->sendmessage(_MYMQTTANTWORTADR, inhalt);
@@ -38,15 +36,6 @@ void OTAUpdater::setupmyOTA(const char* nameprefix, const char* ssid, const char
 	}
 
 
-	// Port defaults to 3232
-	// ArduinoOTA.setPort(3232); // Use 8266 port if you are working in Sloeber IDE, it is fixed there and not adjustable
-
-	// No authentication by default
-	// ArduinoOTA.setPassword("admin");
-
-	// Password can be set with it's md5 value as well
-	// MD5(admin) = 21232f297a57a5a743894a0e4a801fc3
-	// ArduinoOTA.setPasswordHash("21232f297a57a5a743894a0e4a801fc3");
 
 	ArduinoOTA.onStart([this]() {
 		//NOTE: make .detach() here for all functions called by Ticker.h library - not to interrupt transfer process in any way.
@@ -61,7 +50,7 @@ void OTAUpdater::setupmyOTA(const char* nameprefix, const char* ssid, const char
 
 		});
 
-	ArduinoOTA.onEnd([this]() {
+		ArduinoOTA.onEnd([this]() {
 		benachrichtigealles("End");
 		delay(1000);
 		ESP.restart();
