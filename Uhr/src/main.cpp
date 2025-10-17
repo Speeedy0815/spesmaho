@@ -1,25 +1,25 @@
 //Todo Watchdog sinnvoll, ohne Ethernetverbindung tut der nichts!
 
-#define SPD_USE_CANUMSETZER     0
+#define SPD_USE_CANUMSETZER     1
 
 
 #define SPD_USE_HW_MCP          1 
 #define SPD_USE_INPUTS          1
 #define SPD_USE_OUTPUTS         1
 
-#define SPD_USE_IR              0  		//getestet
-#define SPD_USE_LEDMTRX         0 		//getestet
-#define SPD_USE_DMXDIMMER		    0     //getestet
-#define SPD_USE_LEDINTERF       0 
+#define SPD_USE_IR              1  		//getestet
+#define SPD_USE_LEDMTRX         1 		//getestet
+#define SPD_USE_DMXDIMMER		    1     //getestet
+#define SPD_USE_LEDINTERF       1 
 
  
 #define SPD_USE_OTAUPDATER      1    
-#define SPD_USE_WTD             0   	//getestet
-#define SPD_USE_SPIFFSSETTINGS  0 		//getestet
+#define SPD_USE_WTD             1   	//getestet
+#define SPD_USE_SPIFFSSETTINGS  1 		//getestet
  
  
 #define SPD_USE_MQTTVARIANT     1  
-            //0: Serial 				//getestet
+            //0: Serial 				      //getestet
             //1: W5500Ethernet   	    //getestet
             //2: Wifi               
             //3: CAN
@@ -69,8 +69,8 @@
 #if SPD_USE_WTD == 1
   #include "arduinowatchdog.h"
 #endif
-#if SPD_USE_OTAUPDATER == 1
-  #include "myotaupdater.h"//über Wifi Für Ethernet habe ich nichts sinnvolles gefunden Chat GPT halluziniert
+#if SPD_USE_OTAUPDATER == 1 
+  #include "myotaupdater.h"//über Wifi
 #endif
 #if SPD_USE_DMXDIMMER == 1
   #include "myDMXDimmerESP.h" 
@@ -100,15 +100,25 @@ void setup()
 const uint8_t resetmcppin = 4;//Achtung Hardwarefehler in der ersten Variante
 	myBasisHW_MCP_Resetit(resetmcppin);
 #endif
+
+
+
+
  
 	char MYMQTTNAME[50];  
 	strcpy(MYMQTTNAME, "/tester");
  
+
 #if SPD_USE_SPIFFSSETTINGS == 1
+
   const char* filepfad = "/MQTTName";
   mySpiffsSettingsloaderString Adressloader(filepfad, MYMQTTNAME);
   strcpy(MYMQTTNAME, Adressloader.getSett());
+	
 #endif
+
+
+ 
 #if SPD_USE_MQTTVARIANT == 0
   Serial.println("Starte Serial Interface");
   SerialDummy mqtt(MYMQTTNAME);
@@ -203,6 +213,12 @@ for (uint8_t i = 0; i < 4; i++) {
     Serial.print("Eingänge Block eingehangen, Nr: ");
     Serial.println(i);
 
+    char payload[8];                      // groß genug für "A255\0"
+    int n = snprintf(payload, sizeof(payload), "E%u", (unsigned)i);
+    if (n > 0 && n < (int)sizeof(payload)) {
+      mqtt.sendmessage("INF", payload);   // erwartet const char*
+    }
+
     INs[i] = new myInputs(&mqtt, &MCPs[i],
                           MCUSETTINGS1eingangssadressenlen,
                           MCUSETTINGS1eingangsadressenpin,
@@ -242,11 +258,18 @@ uint8_t* logsOut[4] = { logsO0, logsO1, logsO2, logsO3 };
 myOutputs* OUTs[4] = { nullptr, nullptr, nullptr, nullptr };
 
 for (uint8_t i = 0; i < 4; i++) {
-  if (MCPs[i].istesauchda()) {
+  if (MCPs[i+4].istesauchda()) {
     Serial.print("Ausgänge Block eingehangen, Nr: ");
     Serial.println(i);
 
-    OUTs[i] = new myOutputs(&mqtt, &MCPs[i],
+    char payload[8];                      // groß genug für "A255\0"
+    int n = snprintf(payload, sizeof(payload), "A%u", (unsigned)i);
+    if (n > 0 && n < (int)sizeof(payload)) {
+      mqtt.sendmessage("INF", payload);   // erwartet const char*
+    }
+
+
+    OUTs[i] = new myOutputs(&mqtt, &MCPs[i+4],
                             LAENGEAUSGAENGE,
                             ADRESSENHWAUSGAENGE,
                             logsOut[i],
@@ -300,8 +323,20 @@ for (uint8_t i = 0; i < 4; i++) {
 	//###########################################################################################################################
 #if SPD_USE_OTAUPDATER == 1  
   const char* Firmwarename = "GruenePlatine.bin";
-  OTAUpdater OTA(&mqtt,Firmwarename);
+	OTAUpdater OTA(&mqtt,Firmwarename);
 	GlobInterfaces.addInt(&OTA);
+  
+  
+ 
+ 
+
+
+
+
+
+
+
+
 #endif
 	//###########################################################################################################################
 #if SPD_USE_DMXDIMMER == 1

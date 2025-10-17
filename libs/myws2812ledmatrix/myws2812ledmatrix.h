@@ -39,7 +39,7 @@ private:
     uint16_t xyToIndex(uint8_t x, uint8_t y); // Hilfsfunktion für Mäander	 
 	myUhrBasis* _Uhrzeit;
 	myTimer Uhrtimer;
-	uint16_t Uhrrefreshzeit = 10000; //alle 10 Sekunden wird Uhrzeit neu dargestellt
+	uint16_t Uhrrefreshzeit = 10000; //alle 10000 MilliSekunden wird Uhrzeit neu dargestellt
     void drawTextDyn(); // New function for dynamic scrolling text
 	
     myTimer DyntextTimer;

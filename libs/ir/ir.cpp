@@ -104,7 +104,7 @@ void MyIr::update()
 		else {
 			if (IrReceiver.decodedIRData.decodedRawData < 0xFFFFFFFF)
 			{
-				if (IrReceiver.decodedIRData.decodedRawData != 0)
+				if (IrReceiver.decodedIRData.decodedRawData != 0 && IrReceiver.decodedIRData.command != 0 && IrReceiver.decodedIRData.address != 0 )
 				{
 
 					debug("RawData:");
@@ -123,6 +123,10 @@ void MyIr::update()
 						IrReceiver.decodedIRData.command);
 					debugln("datastring");
 					debugln(dataString);
+
+
+					 
+			 
 					_mqtt->sendmessage(_MYMQTTANTWORTADR, dataString);
 				}
 				else
