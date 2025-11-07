@@ -300,11 +300,11 @@ for (uint8_t i = 0; i < 4; i++) {
 	myUhrESP Uhr(zeitzone);
 	GlobInterfaces.addInt(&Uhr);
 
-	const uint8_t LEDWS28PIN1 = 12;
- 
+  constexpr uint8_t LEDWS28PIN1 = 12;
 
-	myLEDMatrix LEDMTX( LEDWS28PIN1, &Uhr);
-	GlobInterfaces.addInt(&LEDMTX);
+  // Template-Instanz:
+  myLEDMatrix<LEDWS28PIN1> LEDMTX(&Uhr);
+  GlobInterfaces.addInt(&LEDMTX);
 #endif
 	//###########################################################################################################################
 #if SPD_USE_BEEPER == 1
@@ -349,11 +349,15 @@ for (uint8_t i = 0; i < 4; i++) {
 	const uint8_t BANDNO1 = 0;
 	const uint8_t ANZAHLLEDs1 = 50;
 	const uint8_t MAXBRIGHTNESS1 = 50;
-	const uint8_t LEDWS28PINBand = 33;
+	constexpr uint8_t LEDWS28PINBand = 33;
 	const bool SpeichereWertefuerHelligkeitsaenderung = true;
 
-	Ws2812streifen LEDs1(BANDNO1, ANZAHLLEDs1, LEDWS28PINBand, MAXBRIGHTNESS1, SpeichereWertefuerHelligkeitsaenderung);
+	Ws2812streifen<LEDWS28PINBand> LEDs1(BANDNO1, ANZAHLLEDs1, MAXBRIGHTNESS1, SpeichereWertefuerHelligkeitsaenderung);
 	GlobInterfaces.addInt(&LEDs1);
+
+ 
+
+
 #endif
 	//###########################################################################################################################
 

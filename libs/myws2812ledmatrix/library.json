@@ -1,10 +1,10 @@
 {
-    "name": "myws2812ledmatrix",
-    "version": "1.0.1",
-    "dependencies": [
-        {
-            "name": "Adafruit NeoPixel",
-            "version": "1.12.0"            
-        }
-    ]
+  "name": "myws2812ledmatrix",
+  "version": "1.1.0",
+  "dependencies": [
+    {
+      "name": "FastLED",
+      "version": "^3.9.0"
+    }
+  ]
 }

@@ -2,11 +2,12 @@
 #ifndef VERSIONHEADER
 #define VERSIONHEADER
 
-const double GLOBALVERSION = 1.68;
+const double GLOBALVERSION = 1.70;
 
 
 /*
 XXXX BEGIN
+1.70    Umbau von Neopixel auf FastLED --> Besseres Timing, keine Artefakte, achtung nicht getestet für Displayplatinen bis jetzt 
 1.68    IR sendet keine Nullen mehr, Info, welche Eingänge benutzt werden. 
 1.67    Filter in Helligkeitssensor eingebaut (wegen LED Beleuchtung)
 1.66    Uhr hinzugefügt als Matrixdisplay

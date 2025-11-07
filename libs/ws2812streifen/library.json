@@ -3,8 +3,8 @@
     "version": "1.0.0",
     "dependencies": [
         {
-            "name": "Adafruit NeoPixel",
-            "version": "1.12.0"            
+			"name": "FastLED",
+			"version": "^3.9.0"       
         }
     ]
 }
