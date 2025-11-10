@@ -2,11 +2,12 @@
 #ifndef VERSIONHEADER
 #define VERSIONHEADER
 
-const double GLOBALVERSION = 1.70;
+const double GLOBALVERSION = 1.71;
 
 
 /*
 XXXX BEGIN
+1.71    OneWire Speicherfehler --> es werden jetzt alle Bytes gesendet --> Einbau in Uhr
 1.70    Umbau von Neopixel auf FastLED --> Besseres Timing, keine Artefakte, achtung nicht getestet für Displayplatinen bis jetzt 
 1.68    IR sendet keine Nullen mehr, Info, welche Eingänge benutzt werden. 
 1.67    Filter in Helligkeitssensor eingebaut (wegen LED Beleuchtung)

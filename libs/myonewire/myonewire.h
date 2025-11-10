@@ -35,7 +35,7 @@ private:
 	bool button_darfsenden = true;
 	 
 
-	char sendebuffer[30];
+	char sendebuffer[50];
 
 
 	const char* _MYMQTTANTTEMP = "Temperaturen/";

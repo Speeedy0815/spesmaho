@@ -11,14 +11,16 @@
 #define SPD_USE_LEDMTRX         1 		//getestet
 #define SPD_USE_DMXDIMMER		    1     //getestet
 #define SPD_USE_LEDINTERF       1 
-
+#define SPD_USE_ONEWIRE         1
  
 #define SPD_USE_OTAUPDATER      1    
 #define SPD_USE_WTD             1   	//getestet
 #define SPD_USE_SPIFFSSETTINGS  1 		//getestet
+
+
  
  
-#define SPD_USE_MQTTVARIANT     1  
+#define SPD_USE_MQTTVARIANT     2  
             //0: Serial 				      //getestet
             //1: W5500Ethernet   	    //getestet
             //2: Wifi               
@@ -87,8 +89,9 @@
 #if SPD_USE_LEDINTERF == 1
   #include "ws2812streifen.h"
 #endif
-
-
+#if SPD_USE_ONEWIRE == 1 
+  #include "myonewire.h"
+#endif
 Interfacesammler GlobInterfaces(25);
 
 void setup()
@@ -325,18 +328,6 @@ for (uint8_t i = 0; i < 4; i++) {
   const char* Firmwarename = "GruenePlatine.bin";
 	OTAUpdater OTA(&mqtt,Firmwarename);
 	GlobInterfaces.addInt(&OTA);
-  
-  
- 
- 
-
-
-
-
-
-
-
-
 #endif
 	//###########################################################################################################################
 #if SPD_USE_DMXDIMMER == 1
@@ -354,14 +345,17 @@ for (uint8_t i = 0; i < 4; i++) {
 
 	Ws2812streifen<LEDWS28PINBand> LEDs1(BANDNO1, ANZAHLLEDs1, MAXBRIGHTNESS1, SpeichereWertefuerHelligkeitsaenderung);
 	GlobInterfaces.addInt(&LEDs1);
-
- 
-
-
 #endif
 	//###########################################################################################################################
 
+ #if SPD_USE_ONEWIRE == 1 
+	//###########################################################################################################################
+	const uint8_t ADDRESSE1WIREPIN = 27;
 
+	XOnewire myonewire(ADDRESSE1WIREPIN, &mqtt);
+	GlobInterfaces.addInt(&myonewire);
+	//###########################################################################################################################
+#endif
 
 	HAUPTSCHLEIFE();
 

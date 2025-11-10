@@ -126,12 +126,12 @@ void XOnewire::updSchluesselandSend()
 
 						uint8_t i = 0;
 						for (i = 0; i < 8; i++) {
-							char tmp[2];
+							char tmp[3];
 							sprintf(tmp, "%02X", addr[i]);
 							sendebuffer[2 * i] = tmp[0];
 							sendebuffer[2 * i + 1] = tmp[1];
 						}
-						sendebuffer[i] = 0x00;
+						sendebuffer[2*i] = 0x00;
 						_mqtt->sendmessage(_MYMQTTANTSCH, sendebuffer);
 						TimerSchl.start(sendebegrenzunginms_Ibutton, false);
 						button_darfsenden = false;
