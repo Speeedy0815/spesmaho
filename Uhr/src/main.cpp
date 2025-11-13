@@ -15,7 +15,7 @@
  
 #define SPD_USE_OTAUPDATER      1    
 #define SPD_USE_WTD             1   	//getestet
-#define SPD_USE_SPIFFSSETTINGS  1 		//getestet
+ 
 
 
  
@@ -29,8 +29,7 @@
 
 #include "hilfe.h"
 #include "basisinterface.h"
-#include "settingsmqttsecret.h"
-
+#include "SmartHomeSettings.h"
 
 
 
@@ -77,9 +76,7 @@
 #if SPD_USE_DMXDIMMER == 1
   #include "myDMXDimmerESP.h" 
 #endif
-#if SPD_USE_SPIFFSSETTINGS == 1
-  #include "mySpiffsSettingsloader.h"
-#endif
+ 
 
 #if SPD_USE_CANUMSETZER == 1
 	#include "canumsetzer.h"
@@ -93,38 +90,29 @@
   #include "myonewire.h"
 #endif
 Interfacesammler GlobInterfaces(25);
+SmartHomeSettings* settings = nullptr;
 
 void setup()
 {
-
-	globaleinitialisierung();
+  globaleinitialisierung();
+  settings = new SmartHomeSettings("smarthome_"); //falls nichts eingestellt ist, eröffnet das ding einen Hotspot
+  GlobInterfaces.addInt(settings);
+	
 
 #if SPD_USE_HW_MCP == 1
 const uint8_t resetmcppin = 4;//Achtung Hardwarefehler in der ersten Variante
 	myBasisHW_MCP_Resetit(resetmcppin);
 #endif
 
-
-
-
- 
-	char MYMQTTNAME[50];  
-	strcpy(MYMQTTNAME, "/tester");
  
 
-#if SPD_USE_SPIFFSSETTINGS == 1
 
-  const char* filepfad = "/MQTTName";
-  mySpiffsSettingsloaderString Adressloader(filepfad, MYMQTTNAME);
-  strcpy(MYMQTTNAME, Adressloader.getSett());
-	
-#endif
 
 
  
 #if SPD_USE_MQTTVARIANT == 0
   Serial.println("Starte Serial Interface");
-  SerialDummy mqtt(MYMQTTNAME);
+  SerialDummy mqtt(settings->getMqttName());
 #endif
 #if SPD_USE_MQTTVARIANT == 1
   Serial.println("Starte Ethernet Interface");
@@ -132,11 +120,11 @@ const uint8_t resetmcppin = 4;//Achtung Hardwarefehler in der ersten Variante
   GLOGetETHMacFromWifiMac(MYMACADDR);
   const uint8_t RESPINETHERNET = 26;
   const uint8_t CSETHERNET = 14;
-  MqttCommunication mqtt(MYSERVERADDR, MYMACADDR, MYMQTTNAME, MYMQTTUSER, MYMQTTPASSW, RESPINETHERNET,CSETHERNET);
+  MqttCommunication mqtt(settings->getMqttServeraddr(), MYMACADDR, settings->getMqttName(), settings->getMqttUser(), settings->getMqttPassword(), RESPINETHERNET,CSETHERNET);
 #endif
  #if SPD_USE_MQTTVARIANT == 2
   Serial.println("Starte Wifi Interface");
-  ESP_Wifi_MQTT mqtt(MYSERVERADDR, MYMQTTNAME, MYMQTTUSER, MYMQTTPASSW, WIFISSID, WIFIPW);
+  ESP_Wifi_MQTT mqtt(settings->getMqttServeraddr(), settings->getMqttName(), settings->getMqttUser(), settings->getMqttPassword(), settings->getWifiSsid(), settings->getWifiPassword());
 #endif
   GlobInterfaces.addInt(&mqtt);
 
@@ -162,14 +150,7 @@ const uint8_t resetmcppin = 4;//Achtung Hardwarefehler in der ersten Variante
 #endif
 //###########################################################################################################################
 
-
-
-
-
-#if SPD_USE_SPIFFSSETTINGS == 1  
-	GlobInterfaces.addInt(&Adressloader);
-#endif 
-
+ 
 	//###########################################################################################################################
 #if SPD_USE_HW_MCP == 1  
 myBasisHW_MCP MCPs[8] = { myBasisHW_MCP(0), myBasisHW_MCP(1), myBasisHW_MCP(2), myBasisHW_MCP(3) , myBasisHW_MCP(4), myBasisHW_MCP(5) ,myBasisHW_MCP(6) ,myBasisHW_MCP(7) };
@@ -326,7 +307,7 @@ for (uint8_t i = 0; i < 4; i++) {
 	//###########################################################################################################################
 #if SPD_USE_OTAUPDATER == 1  
   const char* Firmwarename = "GruenePlatine.bin";
-	OTAUpdater OTA(&mqtt,Firmwarename);
+	OTAUpdater OTA(&mqtt,Firmwarename,settings->getWifiSsid(),settings->getWifiPassword());
 	GlobInterfaces.addInt(&OTA);
 #endif
 	//###########################################################################################################################

@@ -1,5 +1,18 @@
 {
 	"folders": [
+	
+		{
+			"name": "DisplayStube",
+			"path": "DisplayStube"
+		},
+		{
+			"name": "Uhr",
+			"path": "Uhr"
+		},
+		{
+			"name": "projektzumtesten",
+			"path": "projektzumtesten"
+		},
 		{
 			"path": "Flur"
 		},
@@ -22,17 +35,12 @@
 			"name": "Garage",
 			"path": "Garage"
 		},
-		{
-			"name": "DisplayStube",
-			"path": "DisplayStube"
-		},
-		{
-			"name": "Uhr",
-			"path": "Uhr"
-		},
+		
 		{
 			"path": "settings"
 		}
+	
+		
 	],
 	"settings": {
 		"files.associations": {

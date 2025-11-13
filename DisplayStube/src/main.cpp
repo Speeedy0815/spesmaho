@@ -13,10 +13,10 @@
 #define SPD_USE_HELL_SENS       1  //getestet
 #define SPD_USE_OTAUPDATER      1  //getestet  
 #define SPD_USE_WTD             1  //getestet 
-#define SPD_USE_SPIFFSSETTINGS  1 
  
  
-#define SPD_USE_MQTTVARIANT    3  
+ 
+#define SPD_USE_MQTTVARIANT    0  
             //0: Serial 
             //1: W5500Ethernet      //gibts hier nicht!!!
             //2: Wifi               //getestet
@@ -25,7 +25,7 @@
 
 #include "hilfe.h"
 #include "basisinterface.h"
-#include "settingsmqttsecret.h"
+#include "SmartHomeSettings.h"
 
 #if SPD_USE_DISP_UND_HEIZ
   #include "User_Setup_tft.h"
@@ -88,12 +88,14 @@
 
 
 Interfacesammler GlobInterfaces(20);
+SmartHomeSettings* settings = nullptr;
 
 void setup()
 {
 
 	globaleinitialisierung();
-
+  	settings = new SmartHomeSettings("smarthome_"); //falls nichts eingestellt ist, eröffnet das ding einen Hotspot
+  	GlobInterfaces.addInt(settings);
 
 	//const uint8_t CANADDRESSE = 0;  // Garage (an Garagenplatine)
   
@@ -107,28 +109,28 @@ void setup()
 	//const uint8_t CANADDRESSE = 7;  // WR
 
  
-	const char* MYMQTTNAME = "/tester";
+ 
 
  
 #if SPD_USE_MQTTVARIANT == 0
-  SerialDummy mqtt(MYMQTTNAME);
+  Serial.println("Starte Serial Interface");
+  SerialDummy mqtt(settings->getMqttName());
 #endif
  #if SPD_USE_MQTTVARIANT == 2
-  ESP_Wifi_MQTT mqtt(MYSERVERADDR, MYMQTTNAME, MYMQTTUSER, MYMQTTPASSW, WIFISSID, WIFIPW);
+  Serial.println("Starte Wifi Interface");
+  ESP_Wifi_MQTT mqtt(settings->getMqttServeraddr(), settings->getMqttName(), settings->getMqttUser(), settings->getMqttPassword(), settings->getWifiSsid(), settings->getWifiPassword());
 #endif
 #if SPD_USE_MQTTVARIANT == 3
-  canSettingloader CANaddrloader;  // auch hier wieder ohne Klammern, verstehe ich nicht
+ 
   const uint32_t geschwindigkeit = 125000; // scheint nicht zu wirken
   const uint8_t CANCS_RXpin = 16;
   const uint8_t CANIRQ_TXpin = 17;
   canhardESP canHW(CANCS_RXpin, CANIRQ_TXpin, geschwindigkeit);
-  CANMQTT mqtt(CANaddrloader.getAddr(), &canHW); //nummer, rx und tx pin
+  CANMQTT mqtt(settings->getCanAddr(), &canHW); //nummer, rx und tx pin
 #endif
 
 	GlobInterfaces.addInt(&mqtt);
-#if SPD_USE_MQTTVARIANT == 3
-	GlobInterfaces.addInt(&CANaddrloader);
-#endif
+ 
  
 	//###########################################################################################################################
 #if SPD_USE_HW_GPIO == 1
@@ -258,7 +260,7 @@ void setup()
 	//###########################################################################################################################
 #if SPD_USE_OTAUPDATER == 1  
   const char* Firmwarename = "DisplayStube.bin";
-	OTAUpdater OTA(&mqtt,Firmwarename);
+	OTAUpdater OTA(&mqtt,Firmwarename,settings->getWifiSsid(),settings->getWifiPassword());
 #if SPD_USE_DISP_UND_HEIZ == 1 
 	OTA.setupdateW(&DISP);
 #endif  

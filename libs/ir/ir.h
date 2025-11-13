@@ -9,8 +9,6 @@
 #include "WProgram.h"
 #endif
 #include "basiskommunikation.h"
-//#include "PinDefinitionsAndMore.h"
-
 #include "basisinterface.h"
 
 

@@ -100,8 +100,14 @@ void OTAUpdater::sendeIPuName()
 	benachrichtigealles(buf);
 }
 
-OTAUpdater::OTAUpdater(Basiskommunikation* mqtt, const char* firmwarename)
+OTAUpdater::OTAUpdater(Basiskommunikation* mqtt,const char* firmwarename,const char* wifissid,const char* wifipassword)
 {
+ 
+	 _wifissid = wifissid;
+	 _wifipassword = wifipassword;
+ 
+
+
 	_mqtt = mqtt;
 	_firmwarename = firmwarename;
 }
@@ -159,7 +165,7 @@ void OTAUpdater::starteupdate()
 {
 	_updatemode = true;
 	benachrichtigealles("Start");
-	setupmyOTA(_mqtt->get_MQTTName(), WIFISSID, WIFIPW);
+	setupmyOTA(_mqtt->get_MQTTName(), _wifissid, _wifipassword);
 	TIM.start(sendezeit, false);
 	otaisstarted = true;
 }

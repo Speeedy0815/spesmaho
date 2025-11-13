@@ -8,8 +8,6 @@
 #endif
 #include "basiskommunikation.h"
 
-#include "settingsmqttsecret.h"
-
 #include "basisinterface.h"
 
 #include "hilfe.h"
@@ -37,6 +35,9 @@ class OTAUpdater : public BasisInterface
 {
 private:
 	const char* _firmwarename;
+	const char* _wifissid;
+	const char* _wifipassword;
+
 	bool _newcontent = false;
 	char updatestring[50] = "not startet";
 	bool _updatemode = false;
@@ -55,7 +56,7 @@ public:
 	void starteupdate();
 	void setupdateW(updatewuenscher* updatew) { _updatew = updatew; };
 
-	OTAUpdater(Basiskommunikation* mqtt,const char* firmwarename);
+	OTAUpdater(Basiskommunikation* mqtt,const char* firmwarename,const char* wifissid,const char* wifipassword);
 	void update();
 	bool isnewcontent() { return _newcontent; };
 	char* getInhalt() { _newcontent = false;  return updatestring; };

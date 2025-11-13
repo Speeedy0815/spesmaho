@@ -27,10 +27,10 @@ Garage:
 
 
 Vorgang:
-	Zockzimmer fertig stellen
-	Küche Display aufbauen mit Taster + per CAN anschließen
+	    Zockzimmer fertig stellen
+	    Küche Display aufbauen mit Taster + per CAN anschließen
 	Taster Küche weg  --> Steckdose o.ä. hin
-	1-Wire entwickeln
+	    1-Wire entwickeln
 	Garage/Garten/Zentrale ersetzen (auf Serial in Zentrale verzichten)
 	DMX Controller kaufen für Flur und an Uhr hängen
 
@@ -38,5 +38,5 @@ Vorgang:
 was fehlt noch:
 	Ölstand (Haustür)
 	Telefon  (Haustür)
-	Flur Eule (Flur)
+	 
 	kleines Bad Taster  (Flur)
