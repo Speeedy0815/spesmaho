@@ -15,12 +15,12 @@
  
 #define SPD_USE_OTAUPDATER      1    
 #define SPD_USE_WTD             1   	//getestet
- 
+#define SPD_USE_ESPHWWTD        1   	//getestet
 
 
  
  
-#define SPD_USE_MQTTVARIANT     2  
+#define SPD_USE_MQTTVARIANT    1   
             //0: Serial 				      //getestet
             //1: W5500Ethernet   	    //getestet
             //2: Wifi               
@@ -33,7 +33,9 @@
 
 
 
-
+#if SPD_USE_ESPHWWTD == 1
+  #include "esphardwarewatchdog.h"
+#endif
 #if SPD_USE_LEDMTRX == 1
   #include <myws2812ledmatrix.h>
 
@@ -95,9 +97,20 @@ SmartHomeSettings* settings = nullptr;
 void setup()
 {
   globaleinitialisierung();
+
+
+
+
+
+
   settings = new SmartHomeSettings("smarthome_"); //falls nichts eingestellt ist, eröffnet das ding einen Hotspot
   GlobInterfaces.addInt(settings);
-	
+
+//NACH dem Hotspot, absichtlich
+#if SPD_USE_ESPHWWTD == 1
+  EspHwWTD hardwarewtd;
+  GlobInterfaces.addInt(&hardwarewtd);
+#endif
 
 #if SPD_USE_HW_MCP == 1
 const uint8_t resetmcppin = 4;//Achtung Hardwarefehler in der ersten Variante
@@ -120,6 +133,9 @@ const uint8_t resetmcppin = 4;//Achtung Hardwarefehler in der ersten Variante
   GLOGetETHMacFromWifiMac(MYMACADDR);
   const uint8_t RESPINETHERNET = 26;
   const uint8_t CSETHERNET = 14;
+ 
+
+
   MqttCommunication mqtt(settings->getMqttServeraddr(), MYMACADDR, settings->getMqttName(), settings->getMqttUser(), settings->getMqttPassword(), RESPINETHERNET,CSETHERNET);
 #endif
  #if SPD_USE_MQTTVARIANT == 2

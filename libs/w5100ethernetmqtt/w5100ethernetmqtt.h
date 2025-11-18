@@ -16,6 +16,7 @@
  
 #include "Ethernet.h"
 #include "hilfe.h"
+#include <SPI.h>
 
 
 class MqttCommunication : public EthernetMQTT

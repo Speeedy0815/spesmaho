@@ -2,11 +2,12 @@
 #ifndef VERSIONHEADER
 #define VERSIONHEADER
 
-const double GLOBALVERSION = 1.72;
+const double GLOBALVERSION = 1.73;
 
 
 /*
 XXXX BEGIN
+1.73    Hardwarewatchdog für ESP32 eingefügt
 1.72    Zentrales Speichern der Settings, ggf Hotspot zum Einstellen öffnen!
 1.71    OneWire Speicherfehler --> es werden jetzt alle Bytes gesendet --> Einbau in Uhr
 1.70    Umbau von Neopixel auf FastLED --> Besseres Timing, keine Artefakte, achtung nicht getestet für Displayplatinen bis jetzt 
