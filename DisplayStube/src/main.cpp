@@ -16,7 +16,7 @@
  
  
  
-#define SPD_USE_MQTTVARIANT    0  
+#define SPD_USE_MQTTVARIANT    2  
             //0: Serial 
             //1: W5500Ethernet      //gibts hier nicht!!!
             //2: Wifi               //getestet
@@ -47,7 +47,7 @@
   #include "mytastermatrix.h"
 #endif
 #if SPD_USE_LEDINTERF == 1
-  #include "ledinterfacews2812.h"
+   #include "ws2812streifen.h"
 #endif
 #if SPD_USE_ENCODER == 1
   #include "myEncoderESP.h"
@@ -195,18 +195,18 @@ void setup()
 	const uint8_t BANDNO1 = 0;
 	const uint8_t ANZAHLLEDs1 = 1;
 	const uint8_t MAXBRIGHTNESS1 = 50;
-	const uint8_t LEDWS28PIN1 = 25;
+	constexpr uint8_t LEDWS28PIN1 = 25;
 	const bool SpeichereWertefuerHelligkeitsaenderung = true;
 
-	LEDW2812Interface LEDs1(BANDNO1, ANZAHLLEDs1, LEDWS28PIN1, MAXBRIGHTNESS1, SpeichereWertefuerHelligkeitsaenderung);
+	Ws2812streifen<LEDWS28PIN1> LEDs1(BANDNO1, ANZAHLLEDs1,  MAXBRIGHTNESS1, SpeichereWertefuerHelligkeitsaenderung);
 	GlobInterfaces.addInt(&LEDs1);
 	//###########################################################################################################################
 	const uint8_t BANDNO2 = 1;
 	const uint8_t ANZAHLLEDs2 = 9;
 	const uint8_t MAXBRIGHTNESS2 = 60;
-	const uint8_t LEDWS28PIN2 = 12;
+	constexpr uint8_t LEDWS28PIN2 = 12;
 
-	LEDW2812Interface LEDs2(BANDNO2, ANZAHLLEDs2, LEDWS28PIN2, MAXBRIGHTNESS2, SpeichereWertefuerHelligkeitsaenderung);
+	Ws2812streifen<LEDWS28PIN2> LEDs2(BANDNO2, ANZAHLLEDs2,  MAXBRIGHTNESS2, SpeichereWertefuerHelligkeitsaenderung);
 	GlobInterfaces.addInt(&LEDs2);
 #endif
 	//###########################################################################################################################

@@ -51,6 +51,8 @@ private:
     char _mode = 'A';
     void update();
     bool callbackismineanddo(char* topic, byte* payload, unsigned int length);
+    void setCircleLevel(uint8_t value);
+ 
 };
 
 
@@ -209,6 +211,20 @@ bool Ws2812streifen<DATA_PIN>::callbackismineanddo(char* topic, byte* payload, u
         debug(" Farbe 0x");
         debugln(_animationsfarbe);
     }
+    else if (payload[2] == 'K')  // neuer statischer Kreis-Modus
+    {
+        _mode = 'K';
+
+        payload[length] = 0x00;   // String terminieren
+        int val = atoi((char*)payload + 3);
+        if (val < 0)   val = 0;
+        if (val > 255) val = 255;
+
+        debug("Kreiswert: ");
+        debugln(val);
+
+        setCircleLevel((uint8_t)val);
+    }
     else  // einzelnes Pixel
     {
         if (length < 10) return false;
@@ -276,3 +292,80 @@ void Ws2812streifen<DATA_PIN>::animiere() {
         tick = 0;
     }
 }
+
+
+
+template <uint8_t DATA_PIN>
+void Ws2812streifen<DATA_PIN>::setCircleLevel(uint8_t value)
+{
+    // physikalische Reihenfolge der LEDs auf dem "Kreis"
+    static const uint8_t ringOrder[9] = { 0, 1, 2, 3, 8, 4, 5, 6, 7 };
+
+    // Korrekturwerte pro LED (0..255). 255 = volle Helligkeit.
+    // Diese Werte kannst du nach Bedarf anpassen.
+    static const uint8_t ledCorrection[9] = {
+        255, 50, 50, 255, 
+        25,
+         255, 50, 50, 255
+    };
+
+    const uint8_t ringCount = sizeof(ringOrder) / sizeof(ringOrder[0]);
+    uint8_t num = (_numLeds < ringCount) ? _numLeds : ringCount;
+
+    // alles erst mal aus
+    for (uint32_t i = 0; i < _numLeds; ++i) {
+        _leds[i] = CRGB::Black;
+        if (_store) {
+            data[i] = 0;
+        }
+    }
+
+    if (value == 0 || num == 0) {
+        FastLED.show();
+        return;
+    }
+
+    if (value > 255) value = 255;
+
+    // 0..255 auf 0..num LEDs abbilden
+    // 255 -> alle LEDs voll an
+    uint16_t total = (uint16_t)value * num; // 0 .. 255*num
+    uint8_t full   = total / 255;          // voll leuchtende Segmente
+    uint8_t rem    = total % 255;          // Rest -> Teil-Helligkeit
+
+    const uint8_t baseValue = 255;         // Basishelligkeit weiß
+
+    // voll leuchtende LEDs
+    for (uint8_t seg = 0; seg < full && seg < num; ++seg) {
+        uint8_t ledIndex = ringOrder[seg];
+        if (ledIndex >= _numLeds) continue;
+
+        uint8_t corr = ledCorrection[seg];
+        uint8_t v    = (uint16_t)baseValue * corr / 255;
+
+        _leds[ledIndex].setRGB(v, v, v);
+        if (_store) {
+            uint32_t wrgb = (uint32_t(v) << 16) | (uint32_t(v) << 8) | v;
+            data[ledIndex] = wrgb;
+        }
+    }
+
+    // letzte LED anteilig
+    if (rem > 0 && full < num) {
+        uint8_t seg      = full;
+        uint8_t ledIndex = ringOrder[seg];
+        if (ledIndex < _numLeds) {
+            uint8_t corr = ledCorrection[seg];
+            uint8_t v    = (uint32_t)baseValue * corr * rem / (255UL * 255UL);
+
+            _leds[ledIndex].setRGB(v, v, v);
+            if (_store) {
+                uint32_t wrgb = (uint32_t(v) << 16) | (uint32_t(v) << 8) | v;
+                data[ledIndex] = wrgb;
+            }
+        }
+    }
+
+    FastLED.show();
+}
+
