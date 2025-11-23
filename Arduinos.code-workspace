@@ -14,28 +14,8 @@
 			"path": "projektzumtesten"
 		},
 		{
-			"path": "Flur"
-		},
-		{
-			"name": "Zentrale",
-			"path": "Zentrale"
-		},
-		{
 			"path": "libs"
 		},
-		{
-			"name": "Haustuer",
-			"path": "Haustuer"
-		},
-		{
-			"name": "Garten",
-			"path": "Garten"
-		},
-		{
-			"name": "Garage",
-			"path": "Garage"
-		},
-		
 		{
 			"path": "settings"
 		}
