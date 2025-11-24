@@ -299,7 +299,8 @@ template <uint8_t DATA_PIN>
 void Ws2812streifen<DATA_PIN>::setCircleLevel(uint8_t value)
 {
     // physikalische Reihenfolge der LEDs auf dem "Kreis"
-    static const uint8_t ringOrder[9] = { 0, 1, 2, 3, 8, 4, 5, 6, 7 };
+    //static const uint8_t ringOrder[9] = { 0, 1, 2, 3, 8, 4, 5, 6, 7 };
+	static const uint8_t ringOrder[9] = { 7, 6, 5, 4, 8, 3, 2, 1, 0 };
 
     // Korrekturwerte pro LED (0..255). 255 = volle Helligkeit.
     // Diese Werte kannst du nach Bedarf anpassen.
