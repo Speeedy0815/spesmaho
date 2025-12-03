@@ -2,11 +2,12 @@
 #ifndef VERSIONHEADER
 #define VERSIONHEADER
 
-const double GLOBALVERSION = 1.74;
+const double GLOBALVERSION = 1.75;
 
 
 /*
 XXXX BEGIN
+1.75    Rampupmodos um DMX hinzugefügt
 1.74    WS2812 als Kreislicht hinzugefügt, Prototyp
 1.73    Hardwarewatchdog für ESP32 eingefügt
 1.72    Zentrales Speichern der Settings, ggf Hotspot zum Einstellen öffnen!

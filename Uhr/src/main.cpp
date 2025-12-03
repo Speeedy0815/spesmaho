@@ -91,7 +91,7 @@
 #if SPD_USE_ONEWIRE == 1 
   #include "myonewire.h"
 #endif
-Interfacesammler GlobInterfaces(25);
+Interfacesammler GlobInterfaces(35);
 SmartHomeSettings* settings = nullptr;
 
 void setup()

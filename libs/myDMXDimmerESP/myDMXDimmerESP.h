@@ -32,6 +32,11 @@ private:
 	uint8_t offset[maxChan] = { 0 };
 	uint8_t geschwindigkeitsvalues[maxGeschwindigkeit] = { 0 };
 	
+	uint8_t rampValue[maxChan]= { 0 };  // aktueller Ramp-Wert 0..255
+    bool    rampDone[maxChan]= { false };   // true, wenn Kanal schon auf Max
+  	uint8_t lastMiliValue[maxChan]= { 0 };   // letzter getmiliValue() für Delta-Berechnung
+
+
 	void setmode(uint8_t mod, uint8_t chan, uint8_t mygeschwindigkeit, uint8_t myoffset, uint8_t value);
 
 
