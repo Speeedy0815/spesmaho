@@ -32,7 +32,7 @@ private:
 	//settings
 	Client* _client; // Netzwerkclient vom Parent 
 	void dopublish(const char* topic, const byte* msgbuffer, uint8_t len);
-
+	char _extraTopic[51]; // max 50 Zeichen + Nullterminator
 protected:
 
 	PubSubClient MqttClient;

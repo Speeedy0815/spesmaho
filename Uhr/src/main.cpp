@@ -335,8 +335,8 @@ for (uint8_t i = 0; i < 4; i++) {
 	//###########################################################################################################################
 #if SPD_USE_LEDINTERF == 1
 	const uint8_t BANDNO1 = 0;
-	const uint8_t ANZAHLLEDs1 = 50;
-	const uint8_t MAXBRIGHTNESS1 = 50;
+	const uint8_t ANZAHLLEDs1 = 72;
+	const uint8_t MAXBRIGHTNESS1 = 70;
 	constexpr uint8_t LEDWS28PINBand = 33;
 	const bool SpeichereWertefuerHelligkeitsaenderung = true;
 

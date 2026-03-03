@@ -18,6 +18,12 @@ void EthernetMQTT::subscribeextra(const char* topic)
 {
 	Serial.print(F("E SubsFTopic "));
 	Serial.println(topic);
+	
+	// Topic speichern (max 50 Zeichen)
+    strncpy(_extraTopic, topic, 50);
+    _extraTopic[50] = '\0'; // sicher nullterminieren
+
+	
 	MqttClient.subscribe(topic); //Identify Controller --> Y muss gesendet werden // Antwort in !
 }
 EthernetMQTT::EthernetMQTT(const char* server, const char* MYMQTTNAME, const char* MYMQTTUS, const char* MYMQTTPW, Client& client, uint16_t brokerport)
@@ -28,7 +34,7 @@ EthernetMQTT::EthernetMQTT(const char* server, const char* MYMQTTNAME, const cha
 	this->_client = &client;
 	_MQTTPW = MYMQTTPW;
 	_MQTTUS = MYMQTTUS;
-
+	_extraTopic[0] = '\0'; // leer initialisieren
 }
 
 
@@ -50,6 +56,14 @@ void EthernetMQTT::reconnect() {
 			debugln(get_SubsTopic());
 			MqttClient.subscribe(get_SubsTopic()); 
 			MqttClient.subscribe("?"); //Identify Controller --> Y muss gesendet werden // Antwort in !
+			
+			
+			   // Extra-Topic wiederherstellen, falls gesetzt
+            if (_extraTopic[0] != '\0') {
+                Serial.print(F("Reconnect SubsExtra: "));
+                Serial.println(_extraTopic);
+                MqttClient.subscribe(_extraTopic);
+            }
 		}
 		else {
 

@@ -47,7 +47,8 @@ private:
 
     void setWRGB(uint16_t nr, uint32_t wrgb);
     void sethell(uint8_t helligkeit);
-    void animiere();
+    void animiereEule();
+    void animiereWeihnachtsstern();
     char _mode = 'A';
     void update();
     bool callbackismineanddo(char* topic, byte* payload, unsigned int length);
@@ -141,14 +142,69 @@ void Ws2812streifen<DATA_PIN>::sethell(uint8_t helligkeit)
 template <uint8_t DATA_PIN>
 void Ws2812streifen<DATA_PIN>::update()
 {
-
-	if (_mode == 'A') {
-       
+    if (_mode == 'A') {
         if (animationsupdatetimer.update_darfich()) {
-            animiere();
+
+            switch (_animationsnummer) {
+                case 0:  animiereEule(); break;
+                case 1:  animiereWeihnachtsstern(); break;
+                default: animiereEule(); break;
+            }
         }
     }
-	return;
+    return;
+}
+
+
+
+template <uint8_t DATA_PIN>
+void Ws2812streifen<DATA_PIN>::animiereWeihnachtsstern()
+{
+    if (_numLeds == 0) return;
+
+    static uint16_t t = 0; // Zeit
+
+    uint8_t br = (_animationsfarbe >> 16) & 0xFF;
+    uint8_t bg = (_animationsfarbe >> 8)  & 0xFF;
+    uint8_t bb = (_animationsfarbe)       & 0xFF;
+    CHSV baseHsv = rgb2hsv_approximate(CRGB(br, bg, bb));
+    uint8_t hue0 = baseHsv.h;
+
+    uint8_t pulse   = sin8((uint8_t)(t >> 1));  // 0..255
+    uint8_t globalV = 120 + (pulse >> 1);       // 120..247
+
+    for (uint16_t i = 0; i < _numLeds; i++) {
+
+        uint16_t segPos = (uint32_t)i * 5UL * 256UL / _numLeds;
+        uint8_t within  = segPos & 0xFF;
+
+        uint8_t dist = (within > 128) ? (within - 128) : (128 - within);
+
+        uint8_t spikeOuter = qsub8(255, dist * 3);
+        uint8_t spikeInner = qsub8(255, dist * 1);
+
+        uint8_t glow  = scale8(spikeInner, 180);
+        uint8_t spike = (spikeOuter > glow) ? spikeOuter : glow;
+
+        uint8_t v = scale8(spike, globalV);
+
+        uint8_t hue = hue0 + (uint8_t)((i * 255UL) / _numLeds) + (uint8_t)(t >> 2);
+
+        CRGB c = CHSV(hue, 255, v);
+
+        if (v > 150 && random8() < 6) {
+            c += CRGB(60, 60, 60);
+        }
+
+        _leds[i] = c;
+
+        if (_store) {
+            data[i] = ((uint32_t)c.r << 16) | ((uint32_t)c.g << 8) | (uint32_t)c.b;
+        }
+    }
+
+    FastLED.show();
+    t++;
 }
 
 template <uint8_t DATA_PIN>
@@ -241,7 +297,7 @@ bool Ws2812streifen<DATA_PIN>::callbackismineanddo(char* topic, byte* payload, u
     return true;
 }
 template <uint8_t DATA_PIN>
-void Ws2812streifen<DATA_PIN>::animiere() {
+void Ws2812streifen<DATA_PIN>::animiereEule() {
     const uint8_t MIN_BRIGHT = 30;     // dunkelste Stelle im Fleck
     const uint8_t MAX_BRIGHT = 255;    // Grundhelligkeit
     const int FLECK_BREITE = 10;       // Breite des Flecks (in LEDs)
