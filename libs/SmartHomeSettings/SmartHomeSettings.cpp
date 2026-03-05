@@ -9,30 +9,21 @@ void SmartHomeSettings::update()
 
 bool SmartHomeSettings::callbackismineanddo(char* topic, byte* payload, unsigned int length)
 {
-	debugln(F("SmartHomeSettings"));
-	debugln((char*)payload);
-	if (length != 3)
-	{ // mindestens X + M + HHH + AAA
+    debugln(F("SmartHomeSettings"));
+    debugln((char*)payload);
+
+    if (length != 3) {
         debugln("Payload passt nicht kurz");
         return false;
     }
 
+    if (strstr(topic, "CAN") != nullptr)
+        return false;
 
-    
-    // Mode extrahieren
-    if (payload[0] != 'D')
-	{
-		return false;
-	}	
-    if (payload[1] != 'E')
-	{
-		return false;
-	}
-    if (payload[2] != 'L')
-	{
-		return false;
-	}	
-	deleteSettings();
+    if (memcmp(payload, "DEL", 3) != 0)
+        return false;
+
+    deleteSettings();
     return true;
 }
 
@@ -109,8 +100,7 @@ bool SmartHomeSettings::settingsValid(const Settings& s) const {
     if (strlen(s.mqttUser)       == 0) return false;
     if (strlen(s.mqttServeraddr) == 0) return false;
     if (strlen(s.mqttName)       == 0) return false;
-    if (s.canAddr == 0)                return false; // 0 = ungültig
-
+    
     return true;
 }
 
@@ -284,7 +274,7 @@ void SmartHomeSettings::handleRoot() {
             "' name='mqttServeraddr' value='" + String(_settings.mqttServeraddr) + "'><br>";
     html += "MQTT Name (ClientID o.ä.):<br><input type='text' maxlength='" + maxLen +
             "' name='mqttName' value='" + String(_settings.mqttName) + "'><br>";
-    html += "CAN Adresse:<br><input type='number' min='1' max='255' name='canAddr' value='" +
+    html += "CAN Adresse:<br><input type='number' min='0' max='255' name='canAddr' value='" +
             String(_settings.canAddr) + "'><br>";
 
     html += "<button type='submit'>Speichern und Neustart</button>";

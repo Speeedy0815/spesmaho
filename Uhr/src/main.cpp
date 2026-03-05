@@ -104,7 +104,9 @@ void setup()
 
 
   settings = new SmartHomeSettings("smarthome_"); //falls nichts eingestellt ist, eröffnet das ding einen Hotspot
-  GlobInterfaces.addInt(settings);
+  // zum GlobalInterfaces erst nach dem CAN umsetzer hinzufügen!!!
+  //GlobInterfaces.addInt(settings); //es ist weiter hinten!!! nicht einkommentieren
+  //Sonst löscht sich der Umsetzer
 
 //NACH dem Hotspot, absichtlich
 #if SPD_USE_ESPHWWTD == 1
@@ -165,9 +167,8 @@ const uint8_t resetmcppin = 4;//Achtung Hardwarefehler in der ersten Variante
 	GlobInterfaces.addInt(&UMS);
 #endif
 //###########################################################################################################################
-
- 
-	//###########################################################################################################################
+GlobInterfaces.addInt(settings);
+//###########################################################################################################################
 #if SPD_USE_HW_MCP == 1  
 myBasisHW_MCP MCPs[8] = { myBasisHW_MCP(0), myBasisHW_MCP(1), myBasisHW_MCP(2), myBasisHW_MCP(3) , myBasisHW_MCP(4), myBasisHW_MCP(5) ,myBasisHW_MCP(6) ,myBasisHW_MCP(7) };
 
